@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+  --color-primary: #2443b2;
+  --color-muted: #777777;
+  --color-line: #d9d9d9;
+  --color-surface: #f5f5f5;
+  --color-surface-2: #efefef;
+  --font-sans: var(--font-manrope), sans-serif;
+  --font-display: var(--font-archivo), sans-serif;
+  --font-arabic: var(--font-noto-arabic), "Noto Sans Arabic", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-manrope), sans-serif;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+::selection {
+  background: #2443b2;
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid #2443b2;
+  outline-offset: 3px;
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal-rise {
+  animation: reveal-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.swipe-row {
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+}
+
+.swipe-row::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
