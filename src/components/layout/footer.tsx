@@ -61,7 +61,7 @@ export function Footer() {
       </Container>
       <div className="overflow-hidden border-t border-line px-5 md:px-10">
         <Reveal>
-          <p className="font-display text-[clamp(42px,18vw,250px)] font-extrabold leading-[0.78] tracking-[-0.06em]">
+          <p className="font-display text-[clamp(36px,16vw,250px)] font-extrabold leading-[0.78] tracking-[-0.06em]">
             VBADRAN
           </p>
         </Reveal>

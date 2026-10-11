@@ -89,7 +89,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-[#f4f5f7] lg:grid lg:grid-cols-[260px_minmax(0,1fr)]">
+    <div className={`min-h-screen bg-[#f4f5f7] lg:grid lg:grid-cols-[260px_minmax(0,1fr)] ${arabic ? "font-arabic tracking-normal" : ""}`}>
       <aside className="hidden p-4 lg:block">
         <div className="sticky top-4 flex h-[calc(100svh-2rem)] flex-col rounded-[28px] bg-[#eef0f3] p-5">{nav}</div>
       </aside>
@@ -111,7 +111,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
         {open ? (
-          <div className="fixed inset-0 z-50 bg-[#f4f5f7] p-4 lg:hidden">
+          <div className="fixed inset-0 z-[60] bg-[#f4f5f7] p-4 lg:hidden">
             <div className="flex h-full flex-col rounded-[28px] bg-[#eef0f3] p-5">
               <button type="button" className="mb-4 self-end" aria-label={t.closeMenu} onClick={() => setOpen(false)}>
                 <X />

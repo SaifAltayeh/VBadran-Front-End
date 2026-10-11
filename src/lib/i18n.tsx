@@ -18,13 +18,14 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("en");
+function readLang(): Lang {
+  if (typeof window === "undefined") return "en";
+  const saved = window.localStorage.getItem("vb-lang");
+  return saved === "ar" || saved === "en" ? saved : "en";
+}
 
-  useEffect(() => {
-    const saved = window.localStorage.getItem("vb-lang");
-    if (saved === "ar" || saved === "en") setLangState(saved);
-  }, []);
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [lang, setLangState] = useState<Lang>(readLang);
 
   useEffect(() => {
     window.localStorage.setItem("vb-lang", lang);
@@ -32,6 +33,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
     document.body.classList.toggle("font-arabic", lang === "ar");
   }, [lang]);
+
+  useEffect(() => {
+    setLangState(readLang());
+  }, []);
 
   const value = useMemo<LanguageContextValue>(
     () => ({
@@ -59,13 +64,13 @@ export function useLang() {
 export function LanguageToggle({ className }: { className?: string }) {
   const { lang, setLang } = useLang();
   return (
-    <div className={cn("inline-flex rounded-full border border-line p-0.5", className)} role="group" aria-label="Language">
+    <div className={cn("inline-flex shrink-0 rounded-full border border-line p-0.5", className)} role="group" aria-label="Language">
       <button
         type="button"
         onClick={() => setLang("en")}
         aria-pressed={lang === "en"}
         className={cn(
-          "rounded-full px-2.5 py-1 text-[11px] font-semibold tracking-[0.12em]",
+          "rounded-full px-2 py-1 text-[11px] font-semibold tracking-[0.08em] sm:px-2.5 sm:tracking-[0.12em]",
           lang === "en" ? "bg-black text-white" : "text-neutral-500 hover:text-black",
         )}
       >
@@ -76,11 +81,12 @@ export function LanguageToggle({ className }: { className?: string }) {
         onClick={() => setLang("ar")}
         aria-pressed={lang === "ar"}
         className={cn(
-          "rounded-full px-2.5 py-1 font-arabic text-[12px]",
+          "rounded-full px-2 py-1 font-arabic text-[12px] sm:px-2.5",
           lang === "ar" ? "bg-black text-white" : "text-neutral-500 hover:text-black",
         )}
       >
-        عربي
+        <span className="sm:hidden">AR</span>
+        <span className="hidden sm:inline">عربي</span>
       </button>
     </div>
   );

@@ -11,9 +11,9 @@ export function formatPrice(value: string | number, currency = "USD") {
   }).format(amount);
 }
 
-export function formatDate(iso: string) {
+export function formatDate(iso: string, locale = "en") {
   const value = iso.length <= 10 ? `${iso}T00:00:00` : iso;
-  return new Intl.DateTimeFormat("en", { month: "short", day: "numeric" }).format(new Date(value));
+  return new Intl.DateTimeFormat(locale === "ar" ? "ar" : "en", { month: "short", day: "numeric" }).format(new Date(value));
 }
 
 export function initials(name: string) {

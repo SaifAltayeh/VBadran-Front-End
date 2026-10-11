@@ -1,3 +1,5 @@
+import { loc } from "@/lib/i18n/portal-ar";
+
 export class ApiError extends Error {
   status: number;
   body: unknown;
@@ -34,17 +36,22 @@ export function isNetworkError(error: unknown) {
   return error instanceof TypeError || (error instanceof DOMException && error.name === "AbortError");
 }
 
-export function errorMessage(error: unknown, fallback = "Something went wrong. Try again.") {
+function isArabic() {
+  return typeof document !== "undefined" && document.documentElement.lang === "ar";
+}
+
+export function errorMessage(error: unknown, fallback?: string) {
+  const ar = isArabic();
   if (error instanceof ApiError) {
     if (typeof error.body === "object" && error.body && "detail" in error.body) {
       const detail = (error.body as { detail: unknown }).detail;
-      if (typeof detail === "string") return detail;
+      if (typeof detail === "string") return loc(ar, detail) || detail;
     }
-    if (error.status === 401) return "Email or password is incorrect.";
-    if (error.status === 400) return "Check the form and try again.";
+    if (error.status === 401) return ar ? "البريد أو كلمة المرور غير صحيحة." : "Email or password is incorrect.";
+    if (error.status === 400) return ar ? "راجع النموذج وحاول مرة أخرى." : "Check the form and try again.";
   }
-  if (isNetworkError(error)) return "We could not reach the server.";
-  return fallback;
+  if (isNetworkError(error)) return ar ? "تعذّر الوصول إلى الخادم." : "We could not reach the server.";
+  return fallback ?? (ar ? "حدث خطأ. حاول مرة أخرى." : "Something went wrong. Try again.");
 }
 
 async function refreshAccess() {

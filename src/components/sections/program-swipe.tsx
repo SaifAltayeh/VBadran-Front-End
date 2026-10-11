@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 
@@ -45,8 +46,9 @@ export function ProgramSwipe({ programs }: { programs: Program[] }) {
           </Link>
         </div>
 
+        <div className="relative mt-8 md:mt-10">
         <div
-          className="mt-8 grid h-[min(68svh,520px)] gap-2 [--side:0.55fr] md:mt-10 md:h-[clamp(380px,48vw,680px)] md:gap-3.5 md:[--side:1fr] motion-safe:transition-[grid-template-columns] motion-safe:duration-700 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
+          className="grid h-[min(58svh,440px)] gap-2 [--side:0.55fr] md:h-[clamp(380px,48vw,680px)] md:gap-3.5 md:[--side:1fr] motion-safe:transition-[grid-template-columns] motion-safe:duration-700 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{
             touchAction: "pan-y",
             gridTemplateColumns: trio.map((_, index) => (index === focused ? "2fr" : "var(--side)")).join(" "),
@@ -131,6 +133,41 @@ export function ProgramSwipe({ programs }: { programs: Program[] }) {
               );
             })}
           </AnimatePresence>
+        </div>
+        {total > 1 ? (
+          <>
+            <button
+              type="button"
+              aria-label={t.prevProgram}
+              onClick={() => go(-1)}
+              className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-black shadow-md md:hidden"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <button
+              type="button"
+              aria-label={t.nextProgram}
+              onClick={() => go(1)}
+              className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-black shadow-md md:hidden"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+            <div className="mt-4 flex items-center justify-center gap-2 md:hidden" aria-hidden>
+              {programs.map((program, index) => (
+                <button
+                  key={program.slug}
+                  type="button"
+                  aria-label={program.title}
+                  onClick={() => setCurrent(index)}
+                  className={cn(
+                    "h-1.5 rounded-full transition-all",
+                    index === current ? "w-5 bg-black" : "w-1.5 bg-neutral-300",
+                  )}
+                />
+              ))}
+            </div>
+          </>
+        ) : null}
         </div>
       </div>
     </section>

@@ -15,7 +15,7 @@ export function ProgramBrowser({ programs }: { programs: Program[] }) {
   }
 
   return (
-    <div className="grid gap-x-6 gap-y-10 md:grid-cols-3">
+    <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
       {programs.map((program, index) => (
         <Link key={program.slug} href={`/programs/${program.slug}`} className="group flex flex-col">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] bg-[#0a1a4a]">

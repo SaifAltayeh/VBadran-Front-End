@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { crops } from "@/lib/constants/site";
+import { useLang } from "@/lib/i18n";
 import { cn, ease } from "@/lib/utils";
 
 type ButtonProps = {
@@ -39,7 +40,7 @@ export function Button({
   arrow = true,
 }: ButtonProps) {
   const classNames = cn(
-    "group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] transition-[color,background-color,border-color,transform] duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0",
+    "group inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-center text-[12px] font-semibold uppercase tracking-[0.08em] transition-[color,background-color,border-color,transform] duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 sm:px-6 sm:tracking-[0.16em]",
     buttonStyles[variant],
     className,
   );
@@ -245,9 +246,10 @@ export function Accordion({ items }: { items: { q: string; a: string }[] }) {
 }
 
 export function EmptyState({ title, body, href, action }: { title: string; body: string; href?: string; action?: string }) {
+  const { arabic } = useLang();
   return (
-    <div className="border border-line px-6 py-16 text-center">
-      <h2 className="font-display text-3xl">{title}</h2>
+    <div className={`border border-line px-6 py-16 text-center ${arabic ? "font-arabic" : ""}`}>
+      <h2 className={arabic ? "text-3xl font-extrabold" : "font-display text-3xl"}>{title}</h2>
       <p className="mx-auto mt-3 max-w-md text-neutral-700">{body}</p>
       {href && action ? (
         <div className="mt-6">
@@ -259,13 +261,14 @@ export function EmptyState({ title, body, href, action }: { title: string; body:
 }
 
 export function ErrorState({ onRetry }: { onRetry?: () => void }) {
+  const { t, arabic } = useLang();
   return (
-    <div className="border border-line px-6 py-16 text-center" role="alert">
-      <h2 className="font-display text-3xl">This section did not load.</h2>
-      <p className="mt-3 text-neutral-700">Refresh the page. If it continues, the service may be briefly unavailable.</p>
+    <div className={`border border-line px-6 py-16 text-center ${arabic ? "font-arabic" : ""}`} role="alert">
+      <h2 className={arabic ? "text-3xl font-extrabold" : "font-display text-3xl"}>{t.dash.loadError}</h2>
+      <p className="mt-3 text-neutral-700">{t.dash.loadErrorBody}</p>
       {onRetry ? (
-        <button type="button" onClick={onRetry} className="mt-6 text-sm uppercase tracking-[0.16em] underline">
-          Try again
+        <button type="button" onClick={onRetry} className="mt-6 text-sm underline">
+          {t.dash.tryAgain}
         </button>
       ) : null}
     </div>

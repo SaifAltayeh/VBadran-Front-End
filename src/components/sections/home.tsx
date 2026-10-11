@@ -20,7 +20,7 @@ export function Hero() {
   const { t, arabic } = useLang();
   return (
     <section className="px-5 pt-4 md:px-10">
-      <div className="relative min-h-[78vh] overflow-hidden rounded-[28px] bg-black md:min-h-[86vh] md:rounded-[36px]">
+      <div className="relative min-h-[70svh] overflow-hidden rounded-[22px] bg-black md:min-h-[86vh] md:rounded-[36px]">
         <motion.div
           className="absolute inset-0"
           initial={reduce ? false : { scale: 1.12 }}
@@ -161,7 +161,7 @@ export function TransformationBand({ items }: { items: Transformation[] }) {
     <section className="py-16 md:py-24" aria-labelledby="work-heading">
       <Container>
         <Reveal>
-          <div className="mb-8 flex items-end justify-between gap-6 md:mb-10">
+          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6 md:mb-10">
             <h2
               id="work-heading"
               className={
@@ -182,7 +182,7 @@ export function TransformationBand({ items }: { items: Transformation[] }) {
         </Reveal>
       </Container>
 
-      <div className="grid gap-1 px-5 md:grid-cols-3 md:px-10">
+      <div className="grid grid-cols-1 gap-3 px-5 sm:gap-1 md:grid-cols-3 md:px-10">
         {shown.map((item) => (
           <FlipShotCard key={item.slug} item={item} arabic={arabic} t={t} />
         ))}

@@ -37,7 +37,7 @@ export function ResultsContent({ items }: { items: Transformation[] }) {
 
       <section className="pb-16 md:pb-24">
         <Container>
-          <div className="grid gap-x-6 gap-y-10 md:grid-cols-3">
+          <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
             {items.map((item, index) => (
               <article key={item.slug} className="flex flex-col">
                 <FlipShotCard
