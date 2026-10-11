@@ -627,7 +627,7 @@ export function ProgressView() {
 }
 
 export function AccountView() {
-  const { t, font, loc: tr } = usePortal();
+  const { t, arabic, font, loc: tr } = usePortal();
   const resource = useResource(getAccount);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
