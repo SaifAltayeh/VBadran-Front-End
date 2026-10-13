@@ -19,9 +19,9 @@ type LanguageContextValue = {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 function readLang(): Lang {
-  if (typeof window === "undefined") return "en";
+  if (typeof window === "undefined") return "ar";
   const saved = window.localStorage.getItem("vb-lang");
-  return saved === "ar" || saved === "en" ? saved : "en";
+  return saved === "en" ? "en" : "ar";
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

@@ -65,7 +65,7 @@ export function Button({
 }
 
 export function Container({ className, children }: { className?: string; children: React.ReactNode }) {
-  return <div className={cn("mx-auto w-full max-w-[1440px] px-5 md:px-10", className)}>{children}</div>;
+  return <div className={cn("mx-auto w-full min-w-0 max-w-[1440px] px-5 md:px-10", className)}>{children}</div>;
 }
 
 export function Reveal({

@@ -57,8 +57,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${archivo.variable} ${manrope.variable} ${notoArabic.variable} h-full`}>
-      <body className="min-h-full bg-white font-sans text-black antialiased">
+    <html lang="ar" dir="rtl" suppressHydrationWarning className={`${archivo.variable} ${manrope.variable} ${notoArabic.variable} h-full`}>
+      <body className="font-arabic min-h-full bg-white font-sans text-black antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
