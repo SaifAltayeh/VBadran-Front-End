@@ -4,6 +4,7 @@ import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform 
 import { useRef, useState } from "react";
 
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import { useDesktop } from "@/lib/use-desktop";
 
 const ITEM = 180;
@@ -173,13 +174,23 @@ function WhySticky({
 }
 
 export function WhyScroll() {
-  const { t, reasons, arabic } = useLang();
+  const { t, lang, reasons: fallback, arabic } = useLang();
+  const site = useSiteHome();
+  const heading = site.sections.why.heading[lang] || t.whyHeading;
+  const reasons =
+    site.sections.why.items?.length
+      ? site.sections.why.items.map((item) => ({
+          n: item.n,
+          title: item.title[lang] || "",
+          body: item.body[lang] || "",
+        }))
+      : fallback;
   const desktop = useDesktop();
   const reduce = Boolean(useReducedMotion());
 
   if (!desktop || reduce) {
-    return <WhyList heading={t.whyHeading} reasons={reasons} arabic={arabic} />;
+    return <WhyList heading={heading} reasons={reasons} arabic={arabic} />;
   }
 
-  return <WhySticky heading={t.whyHeading} reasons={reasons} arabic={arabic} />;
+  return <WhySticky heading={heading} reasons={reasons} arabic={arabic} />;
 }

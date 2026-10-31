@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ContactContent } from "@/components/pages/contact-content";
+import { getPrograms } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact" },
 };
 
-export default function ContactPage() {
-  return <ContactContent />;
+export default async function ContactPage() {
+  const programs = await getPrograms();
+  return <ContactContent programs={programs} />;
 }

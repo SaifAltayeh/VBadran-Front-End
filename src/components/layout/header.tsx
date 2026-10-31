@@ -67,7 +67,7 @@ export function Header() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.28, ease }}
-          className="fixed inset-x-0 bottom-0 top-[calc(4rem+env(safe-area-inset-top))] z-[55] overflow-y-auto bg-white xl:hidden"
+          className="fixed inset-x-0 bottom-0 top-[calc(4rem+env(safe-area-inset-top))] z-[55] overflow-y-auto bg-background xl:hidden"
         >
           <nav
             className="flex min-h-full flex-col justify-between px-5 py-8 pb-[max(2rem,env(safe-area-inset-bottom))]"
@@ -104,7 +104,7 @@ export function Header() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-[60] border-b bg-white pt-[env(safe-area-inset-top)] transition-[background-color,border-color] duration-300",
+          "fixed inset-x-0 top-0 z-[60] border-b bg-background pt-[env(safe-area-inset-top)] transition-[background-color,border-color] duration-300",
           "h-[calc(4rem+env(safe-area-inset-top))] md:h-[calc(5rem+env(safe-area-inset-top))]",
           scrolled || open ? "border-line" : "border-transparent md:bg-transparent",
         )}

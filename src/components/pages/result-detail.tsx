@@ -2,10 +2,12 @@
 
 import { Button, Container, Media } from "@/components/ui/primitives";
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import type { Transformation } from "@/types";
 
 export function ResultDetail({ item }: { item: Transformation }) {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
+  const action = useSiteHome().pages.transformations.action[lang];
   const same = item.before_image === item.after_image;
 
   return (
@@ -34,7 +36,7 @@ export function ResultDetail({ item }: { item: Transformation }) {
           ) : null}
           <div className="mt-8">
             <Button href="/programs" className={arabic ? "font-arabic" : undefined}>
-              {t.seePrograms}
+              {action || t.seePrograms}
             </Button>
           </div>
         </div>

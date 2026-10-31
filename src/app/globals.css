@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #e8f2fc;
   --foreground: #000000;
   color-scheme: light;
 }
 
 @theme inline {
-  --color-background: #ffffff;
+  --color-background: #e8f2fc;
   --color-foreground: #000000;
   --color-primary: #2443b2;
   --color-muted: #777777;
-  --color-line: #d9d9d9;
-  --color-surface: #f5f5f5;
-  --color-surface-2: #efefef;
+  --color-line: #b7cce8;
+  --color-surface: #d7e8f8;
+  --color-surface-2: #c9ddf4;
   --font-sans: var(--font-manrope), sans-serif;
   --font-display: var(--font-archivo), sans-serif;
   --font-arabic: var(--font-noto-arabic), "Noto Sans Arabic", sans-serif;
@@ -24,7 +24,7 @@ html {
 }
 
 body {
-  background: #ffffff;
+  background: #e8f2fc;
   color: #000000;
   font-family: var(--font-manrope), sans-serif;
   text-rendering: optimizeLegibility;
@@ -32,15 +32,39 @@ body {
   padding-right: env(safe-area-inset-right);
 }
 
-html[dir="rtl"],
-html[dir="rtl"] body,
-body.font-arabic {
+html[dir="rtl"] .font-display,
+html[dir="rtl"] .font-arabic {
+  letter-spacing: 0;
+}
+
+html[dir="ltr"] body {
+  letter-spacing: normal;
+  word-spacing: normal;
+}
+
+[data-admin] {
+  letter-spacing: 0;
+  word-spacing: 0.05em;
+  font-family: var(--font-manrope), sans-serif;
+}
+
+[data-admin] .font-arabic {
   letter-spacing: 0;
   word-spacing: normal;
 }
 
-html[dir="rtl"] .font-display {
+[data-admin] input,
+[data-admin] textarea,
+[data-admin] select {
+  font-family: var(--font-manrope), sans-serif;
   letter-spacing: 0;
+  word-spacing: 0.06em;
+}
+
+[data-admin] input[dir="rtl"],
+[data-admin] textarea[dir="rtl"] {
+  font-family: var(--font-arabic);
+  word-spacing: normal;
 }
 
 main,

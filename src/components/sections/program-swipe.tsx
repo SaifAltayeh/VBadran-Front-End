@@ -7,12 +7,14 @@ import { useRef, useState } from "react";
 
 import { Media } from "@/components/ui/primitives";
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import { useDesktop } from "@/lib/use-desktop";
 import { cn, ease } from "@/lib/utils";
 import type { Program } from "@/types";
 
 export function ProgramSwipe({ programs }: { programs: Program[] }) {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
+  const site = useSiteHome();
   const desktop = useDesktop();
   const [current, setCurrent] = useState(Math.min(1, programs.length - 1));
   const [hovered, setHovered] = useState<number | null>(null);
@@ -39,10 +41,10 @@ export function ProgramSwipe({ programs }: { programs: Program[] }) {
                 : "max-w-[18ch] font-display text-[clamp(28px,8vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em]"
             }
           >
-            {t.programsHeading}
+            {site.sections.programs.heading[lang] || t.programsHeading}
           </h2>
           <Link href="/programs" className={`shrink-0 text-sm text-neutral-700 hover:text-black ${arabic ? "font-arabic" : ""}`}>
-            {t.viewPrograms}
+            {site.sections.programs.link[lang] || t.viewPrograms}
           </Link>
         </div>
 

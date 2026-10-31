@@ -19,7 +19,6 @@ import {
   getExercise,
   getExercises,
   getMyProgram,
-  getNutrition,
   getProgress,
   getWorkout,
   updateAccount,
@@ -223,8 +222,6 @@ export function ProgramView() {
                 </div>
               ))}
             </DashCard>
-            <h2 className={`mt-10 text-2xl tracking-tight ${arabic ? "font-extrabold" : "font-display"}`}>{t.dash.nutritionSupport}</h2>
-            <p className="mt-3 max-w-2xl">{tr(data.nutrition_overview) || t.dash.nutritionMissing}</p>
           </div>
         )
       }
@@ -432,60 +429,6 @@ export function ExerciseDetail({ slug }: { slug: string }) {
               <h2 className={`mt-8 text-2xl ${arabic ? "font-extrabold" : "font-display"}`}>{t.dash.techniqueTips}</h2>
               <p className="mt-2 leading-7">{tr(exercise.tips)}</p>
             </div>
-          </div>
-        )
-      }
-    </Gate>
-  );
-}
-
-export function NutritionView() {
-  const { t, arabic, font, loc: tr } = usePortal();
-  const resource = useResource(getNutrition);
-  return (
-    <Gate {...resource}>
-      {(data) =>
-        !data.plan ? (
-          <EmptyState title={t.dash.noNutrition} body={t.dash.noNutritionBody} />
-        ) : (
-          <div className={font}>
-            <DashTitle arabic={arabic}>{tr(data.plan.title)}</DashTitle>
-            <p className="mt-4 max-w-2xl text-lg leading-8">{tr(data.plan.overview)}</p>
-            <dl className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-              {[
-                [t.dash.calories, data.plan.calories],
-                [t.dash.protein, data.plan.protein_g ? `${data.plan.protein_g}g` : "—"],
-                [t.dash.carbs, data.plan.carbs_g ? `${data.plan.carbs_g}g` : "—"],
-                [t.dash.fats, data.plan.fats_g ? `${data.plan.fats_g}g` : "—"],
-              ].map(([label, value]) => (
-                <div key={String(label)} className="rounded-[24px] bg-white p-4 shadow-[0_10px_32px_-20px_rgba(15,23,42,0.28)]">
-                  <dt className="text-xs text-muted">{label}</dt>
-                  <dd className={`mt-2 text-4xl ${arabic ? "font-extrabold" : "font-display"}`}>{value ?? "—"}</dd>
-                </div>
-              ))}
-            </dl>
-            <div className="mt-10 grid gap-6 md:grid-cols-2">
-              {data.plan.days.map((day) => (
-                <section key={day.id}>
-                  <h2 className={`text-3xl ${arabic ? "font-extrabold" : "font-display"}`}>{tr(day.name)}</h2>
-                  <ul className="mt-3 divide-y divide-line border-y border-line">
-                    {day.meals.map((meal) => (
-                      <li key={meal.id} className="py-3">
-                        <p className="text-sm font-medium">{tr(meal.name)}</p>
-                        <p className="text-sm text-neutral-700">{tr(meal.suggestion)}</p>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
-            </div>
-            <h2 className={`mt-10 text-3xl ${arabic ? "font-extrabold" : "font-display"}`}>{t.dash.coachNote}</h2>
-            <p className="mt-3 max-w-2xl">{tr(data.plan.coach_notes)}</p>
-            <ul className="mt-4 list-disc space-y-2 ps-5 text-sm text-neutral-700">
-              {data.plan.notes.map((note) => (
-                <li key={note.id}>{tr(note.body)}</li>
-              ))}
-            </ul>
           </div>
         )
       }

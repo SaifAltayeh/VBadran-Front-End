@@ -5,11 +5,14 @@ import { useState } from "react";
 
 import { Button, Container } from "@/components/ui/primitives";
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import { cn } from "@/lib/utils";
 
 export function FaqPanel({ items, compactTop = false }: { items?: { q: string; a: string }[]; compactTop?: boolean }) {
-  const { t, faqs, arabic } = useLang();
-  const list = items ?? faqs;
+  const { t, lang, faqs, arabic } = useLang();
+  const site = useSiteHome();
+  const cms = site.sections.faq.items?.map((item) => ({ q: item.q[lang] || "", a: item.a[lang] || "" }));
+  const list = items ?? (cms?.length ? cms : faqs);
   const [open, setOpen] = useState<number | null>(list.length > 1 ? 1 : 0);
 
   return (
@@ -20,7 +23,7 @@ export function FaqPanel({ items, compactTop = false }: { items?: { q: string; a
               <div className="flex flex-col">
                 <p className={`flex items-center gap-2 text-[12px] text-neutral-400 ${arabic ? "font-arabic" : ""}`}>
                   <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  {t.faqKicker}
+                  {site.pages.faq.kicker[lang] || t.faqKicker}
                 </p>
                 <h2
                   className={
@@ -29,16 +32,18 @@ export function FaqPanel({ items, compactTop = false }: { items?: { q: string; a
                       : "mt-4 max-w-[12ch] font-display text-[clamp(32px,4vw,46px)] font-medium leading-[1.15] tracking-[-0.03em] text-neutral-950"
                   }
                 >
-                  {t.faqTitle}
+                  {site.sections.faq.heading[lang] || t.faqTitle}
                 </h2>
                 <div className="mt-10 lg:mt-auto lg:pt-20">
-                  <p className={`text-[15px] font-medium text-neutral-950 ${arabic ? "font-arabic" : ""}`}>{t.faqStill}</p>
+                  <p className={`text-[15px] font-medium text-neutral-950 ${arabic ? "font-arabic" : ""}`}>
+                    {site.pages.faq.still[lang] || t.faqStill}
+                  </p>
                   <p className={`mt-1 max-w-[22ch] text-sm leading-6 text-neutral-400 ${arabic ? "font-arabic" : ""}`}>
-                    {t.faqStillBody}
+                    {site.pages.faq.stillBody[lang] || t.faqStillBody}
                   </p>
                   <div className="mt-5">
                     <Button href="/contact" arrow={false} className={cn("px-6 py-3", arabic && "font-arabic")}>
-                      {t.contactUs}
+                      {site.pages.faq.contact[lang] || t.contactUs}
                     </Button>
                   </div>
                 </div>

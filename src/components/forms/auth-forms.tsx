@@ -21,7 +21,11 @@ export function LoginForm() {
     setPending(true);
     setError("");
     try {
-      await login(String(form.get("email")), String(form.get("password")));
+      const user = await login(String(form.get("email") || "").trim(), String(form.get("password") || ""));
+      if (user.is_staff) {
+        window.location.assign(`${process.env.NEXT_PUBLIC_PANEL_URL || "http://localhost:3011"}/login`);
+        return;
+      }
       router.push(params.get("next") || "/dashboard");
     } catch (err) {
       setError(errorMessage(err));
@@ -34,12 +38,15 @@ export function LoginForm() {
       <Field label={t.email} name="email" type="email" required autoComplete="email" />
       <Field label={t.password} name="password" type="password" required autoComplete="current-password" />
       {error ? <p className="text-sm text-primary" role="alert">{error}</p> : null}
-      <Button type="submit" disabled={pending} arrow={false} className={arabic ? "font-arabic" : undefined}>
+      <Button type="submit" disabled={pending} arrow={false} className={arabic ? "font-arabic normal-case tracking-normal" : "normal-case tracking-normal"}>
         {pending ? t.signingIn : t.login}
       </Button>
       <div className={`flex flex-wrap justify-between gap-3 text-sm ${arabic ? "font-arabic" : ""}`}>
         <Link href="/forgot-password" className="underline-offset-4 hover:underline">{t.forgot}</Link>
         <Link href="/register" className="underline-offset-4 hover:underline">{t.createAccount}</Link>
+        <a href={process.env.NEXT_PUBLIC_PANEL_URL || "http://localhost:3011"} className="underline-offset-4 hover:underline">
+          {t.admin.title}
+        </a>
       </div>
       <button
         type="button"

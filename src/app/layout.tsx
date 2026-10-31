@@ -26,7 +26,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#ffffff",
+  themeColor: "#e8f2fc",
 };
 
 const siteUrl =
@@ -58,7 +58,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning className={`${archivo.variable} ${manrope.variable} ${notoArabic.variable} h-full`}>
-      <body className="font-arabic min-h-full bg-white font-sans text-black antialiased">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var l=localStorage.getItem("vb-lang")==="en"?"en":"ar";document.documentElement.lang=l;document.documentElement.dir=l==="ar"?"rtl":"ltr";}catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body className="min-h-full bg-background font-sans text-black antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>

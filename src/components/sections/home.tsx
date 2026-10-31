@@ -12,12 +12,14 @@ import { FlipShotCard } from "@/components/ui/flip-shot-card";
 import { Button, Container, Media, Reveal } from "@/components/ui/primitives";
 import { aboutHome } from "@/lib/constants/site";
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import { ease } from "@/lib/utils";
 import type { Package, Program, Testimonial, Transformation } from "@/types";
 
 export function Hero() {
   const reduce = Boolean(useReducedMotion());
-  const { t, arabic } = useLang();
+  const { lang, arabic } = useLang();
+  const { hero } = useSiteHome();
   return (
     <section className="px-5 pt-4 md:px-10">
       <div className="relative min-h-[70svh] overflow-hidden rounded-[22px] bg-black md:min-h-[86vh] md:rounded-[36px]">
@@ -27,13 +29,7 @@ export function Hero() {
           animate={{ scale: 1 }}
           transition={{ duration: 1.6, ease }}
         >
-          <Media
-            src="/images/hero/stage-cinematic.jpg"
-            alt="Badran on stage holding a trophy"
-            priority
-            sizes="100vw"
-            position="70% 12%"
-          />
+          <Media src={hero.image} alt={hero.alt[lang]} priority sizes="100vw" position="70% 12%" />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 lg:p-16">
@@ -43,7 +39,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.15 }}
           >
-            {t.heroKicker}
+            {hero.kicker[lang]}
           </motion.p>
           <motion.h1
             className={`mt-4 max-w-[10ch] font-extrabold text-white ${arabic ? "font-arabic text-[clamp(28px,9vw,58px)] leading-[1.15]" : "font-display text-[clamp(30px,10vw,68px)] uppercase leading-[0.88] tracking-[-0.045em]"}`}
@@ -51,11 +47,11 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, ease, delay: 0.28 }}
           >
-            {t.heroTitle[0]}
+            {hero.title[lang][0]}
             <br />
-            {t.heroTitle[1]}
+            {hero.title[lang][1]}
             <br />
-            {t.heroTitle[2]}
+            {hero.title[lang][2]}
           </motion.h1>
           <motion.p
             className={`mt-6 max-w-[28ch] text-base leading-7 text-white/80 ${arabic ? "font-arabic" : ""}`}
@@ -63,7 +59,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.42 }}
           >
-            {t.heroLead}
+            {hero.lead[lang]}
           </motion.p>
           <motion.div
             className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
@@ -71,11 +67,11 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease, delay: 0.55 }}
           >
-            <Button href="/programs" variant="white" className={`w-full sm:w-auto ${arabic ? "font-arabic" : ""}`}>
-              {t.startProgram}
+            <Button href={hero.primary.href} variant="white" className={`w-full sm:w-auto ${arabic ? "font-arabic" : ""}`}>
+              {hero.primary.label[lang]}
             </Button>
-            <Button href="/contact" variant="outlineLight" className={`w-full sm:w-auto ${arabic ? "font-arabic" : ""}`}>
-              {t.talkCoach}
+            <Button href={hero.secondary.href} variant="outlineLight" className={`w-full sm:w-auto ${arabic ? "font-arabic" : ""}`}>
+              {hero.secondary.label[lang]}
             </Button>
           </motion.div>
         </div>
@@ -86,7 +82,15 @@ export function Hero() {
 
 export function AboutUs() {
   const { lang, arabic } = useLang();
-  const copy = aboutHome[lang];
+  const site = useSiteHome();
+  const fallback = aboutHome[lang];
+  const copy = {
+    label: site.about.label[lang] || fallback.label,
+    title: site.about.title[lang] || fallback.title,
+    paragraphs: site.about.paragraphs[lang]?.length ? site.about.paragraphs[lang] : fallback.paragraphs,
+    action: site.about.action[lang] || fallback.action,
+    principles: site.about.principles[lang]?.length ? site.about.principles[lang] : fallback.principles,
+  };
 
   return (
     <section id="about" className="border-b border-line" aria-labelledby="about-heading">
@@ -153,7 +157,8 @@ export function Process() {
 }
 
 export function TransformationBand({ items }: { items: Transformation[] }) {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
+  const site = useSiteHome();
   const shown = items.slice(0, 3);
   if (!shown.length) return null;
 
@@ -170,13 +175,13 @@ export function TransformationBand({ items }: { items: Transformation[] }) {
                   : "font-display text-[clamp(36px,4.4vw,60px)] font-extrabold uppercase leading-[0.9] tracking-[-0.04em]"
               }
             >
-              {t.workHeading}
+              {site.sections.transformations.heading[lang] || t.workHeading}
             </h2>
             <Link
               href="/transformations"
               className={`text-neutral-500 hover:text-black ${arabic ? "font-arabic text-sm" : "text-[11px] uppercase tracking-[0.18em]"}`}
             >
-              {t.allResults}
+              {site.sections.transformations.link[lang] || t.allResults}
             </Link>
           </div>
         </Reveal>
@@ -192,21 +197,30 @@ export function TransformationBand({ items }: { items: Transformation[] }) {
 }
 
 export function Testimonials({ items }: { items: Testimonial[] }) {
-  const item = items[0];
-  if (!item) return null;
+  if (!items.length) return null;
   return (
-    <section className="border-y border-line py-20 md:py-28">
+    <section className="border-y border-line py-16 md:py-28">
       <Container>
-        <Reveal>
-          <blockquote className="mx-auto max-w-4xl text-center">
-            <p className="font-display text-[clamp(26px,3.6vw,48px)] font-medium leading-[1.15] tracking-[-0.03em]">
-              “{item.quote}”
-            </p>
-            <footer className="mt-8 text-sm text-muted">
-              {item.client_name} · {item.program_name}
-            </footer>
-          </blockquote>
-        </Reveal>
+        <div className="grid gap-10 md:gap-14">
+          {items.map((item, index) => (
+            <Reveal key={item.id}>
+              <blockquote className="mx-auto max-w-4xl text-center">
+                <p
+                  className={
+                    index === 0
+                      ? "font-display text-[clamp(22px,5.4vw,48px)] font-medium leading-[1.2] tracking-[-0.03em]"
+                      : "font-display text-[clamp(18px,4.4vw,32px)] font-medium leading-[1.25] tracking-[-0.02em] text-neutral-800"
+                  }
+                >
+                  “{item.quote}”
+                </p>
+                <footer className="mt-6 text-sm text-muted md:mt-8">
+                  {item.client_name} · {item.program_name}
+                </footer>
+              </blockquote>
+            </Reveal>
+          ))}
+        </div>
       </Container>
     </section>
   );
@@ -214,7 +228,7 @@ export function Testimonials({ items }: { items: Testimonial[] }) {
 
 export function PricingBand({ packages }: { packages: Package[] }) {
   return (
-    <section id="pricing" className="scroll-mt-24 bg-white pb-8 pt-16 md:pb-10 md:pt-24">
+    <section id="pricing" className="scroll-mt-24 bg-background pb-8 pt-16 md:pb-10 md:pt-24">
       <Container>
         <PlanCards packages={packages} />
       </Container>
@@ -227,14 +241,17 @@ export function Why() {
 }
 
 export function FaqPreview() {
-  const { faqs } = useLang();
-  return <FaqPanel items={faqs.slice(0, 5)} compactTop />;
+  const { lang, faqs } = useLang();
+  const site = useSiteHome();
+  const cms = site.sections.faq.items?.map((item) => ({ q: item.q[lang] || "", a: item.a[lang] || "" }));
+  return <FaqPanel items={(cms?.length ? cms : faqs).slice(0, 5)} compactTop />;
 }
 
 export function FinalCta() {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
+  const { sections } = useSiteHome();
   return (
-    <section className="bg-white text-black">
+    <section className="bg-background text-black">
       <Container className="flex flex-col items-start justify-between gap-8 pb-8 pt-20 md:flex-row md:items-end md:pb-10 md:pt-24">
         <Reveal>
           <h2
@@ -244,13 +261,13 @@ export function FinalCta() {
                 : "max-w-[10ch] font-display text-[clamp(44px,6vw,80px)] font-extrabold uppercase leading-[0.86] tracking-[-0.045em]"
             }
           >
-            {t.readyTitle}
+            {sections.cta.title[lang] || t.readyTitle}
           </h2>
-          <p className={`mt-5 max-w-sm text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{t.readyLead}</p>
+          <p className={`mt-5 max-w-sm text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{sections.cta.lead[lang] || t.readyLead}</p>
         </Reveal>
         <Reveal delay={0.1}>
-          <Button href="/programs" className={arabic ? "font-arabic" : undefined}>
-            {t.startProgram}
+          <Button href={sections.cta.href || "/programs"} className={arabic ? "font-arabic" : undefined}>
+            {sections.cta.label[lang] || t.startProgram}
           </Button>
         </Reveal>
       </Container>

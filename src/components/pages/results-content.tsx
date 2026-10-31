@@ -5,11 +5,13 @@ import Link from "next/link";
 import { FlipShotCard } from "@/components/ui/flip-shot-card";
 import { Button, Container, Reveal } from "@/components/ui/primitives";
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import type { Transformation } from "@/types";
 
 export function ResultsContent({ items }: { items: Transformation[] }) {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
   const copy = t.resultsPage;
+  const page = useSiteHome().pages.transformations;
 
   return (
     <>
@@ -17,20 +19,20 @@ export function ResultsContent({ items }: { items: Transformation[] }) {
         <Container>
           <Reveal>
             <p className={arabic ? "font-arabic text-[15px] text-primary" : "text-[11px] uppercase tracking-[0.22em] text-primary"}>
-              {copy.kicker}
-            </p>
-            <h1
-              className={
-                arabic
-                  ? "mt-4 max-w-[12ch] font-arabic text-[clamp(32px,9vw,68px)] font-extrabold leading-[1.15]"
-                  : "mt-4 max-w-[10ch] font-display text-[clamp(34px,10vw,76px)] font-medium leading-[0.9] tracking-[-0.045em]"
-              }
-            >
-              {copy.title[0]}
-              <br />
-              {copy.title[1]}
-            </h1>
-            <p className={`mt-5 max-w-md text-base leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.lead}</p>
+                {page.kicker[lang] || copy.kicker}
+              </p>
+              <h1
+                className={
+                  arabic
+                    ? "mt-4 max-w-[12ch] font-arabic text-[clamp(32px,9vw,68px)] font-extrabold leading-[1.15]"
+                    : "mt-4 max-w-[10ch] font-display text-[clamp(34px,10vw,76px)] font-medium leading-[0.9] tracking-[-0.045em]"
+                }
+              >
+                {page.title[lang]?.[0] || copy.title[0]}
+                <br />
+                {page.title[lang]?.[1] || copy.title[1]}
+              </h1>
+              <p className={`mt-5 max-w-md text-base leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{page.lead[lang] || copy.lead}</p>
           </Reveal>
         </Container>
       </section>
@@ -73,11 +75,11 @@ export function ResultsContent({ items }: { items: Transformation[] }) {
       <section className="border-t border-line py-16 md:py-24">
         <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <Reveal>
-            <p className={`max-w-md text-lg leading-8 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.close}</p>
+            <p className={`max-w-md text-lg leading-8 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{page.close[lang] || copy.close}</p>
           </Reveal>
           <Reveal delay={0.08}>
             <Button href="/programs" className={arabic ? "font-arabic" : undefined}>
-              {t.seePrograms}
+              {page.action[lang] || t.seePrograms}
             </Button>
           </Reveal>
         </Container>

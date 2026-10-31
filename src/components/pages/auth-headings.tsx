@@ -6,7 +6,7 @@ export function LoginHeading() {
   const { t, arabic } = useLang();
   return (
     <>
-      <h1 className={arabic ? "font-arabic text-4xl md:text-5xl" : "font-display text-5xl tracking-tight"}>{t.auth.welcome}</h1>
+      <h1 className={arabic ? "font-arabic text-4xl md:text-5xl" : "font-sans text-5xl font-semibold tracking-normal"}>{t.auth.welcome}</h1>
       <p className={`mt-3 text-neutral-700 ${arabic ? "font-arabic" : ""}`}>{t.auth.welcomeLead}</p>
     </>
   );

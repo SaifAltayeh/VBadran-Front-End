@@ -45,7 +45,12 @@ export function errorMessage(error: unknown, fallback?: string) {
   if (error instanceof ApiError) {
     if (typeof error.body === "object" && error.body && "detail" in error.body) {
       const detail = (error.body as { detail: unknown }).detail;
-      if (typeof detail === "string") return loc(ar, detail) || detail;
+      if (typeof detail === "string") {
+        if (/no active account/i.test(detail) || /credentials/i.test(detail)) {
+          return ar ? "البريد أو كلمة المرور غير صحيحة." : "Email or password is incorrect.";
+        }
+        return loc(ar, detail) || detail;
+      }
     }
     if (error.status === 401) return ar ? "البريد أو كلمة المرور غير صحيحة." : "Email or password is incorrect.";
     if (error.status === 400) return ar ? "راجع النموذج وحاول مرة أخرى." : "Check the form and try again.";

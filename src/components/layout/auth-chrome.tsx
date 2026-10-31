@@ -9,13 +9,13 @@ export function AuthChrome({ children }: { children: React.ReactNode }) {
   const { t, arabic } = useLang();
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-2">
+    <div className="grid min-h-screen lg:grid-cols-2" dir={arabic ? "rtl" : "ltr"}>
       <div className="relative hidden min-h-screen lg:block">
         <Media src="/images/hero/coach-portrait.jpg" alt="" sizes="50vw" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
         <div className="absolute bottom-10 left-10 right-10 text-white">
           <p className="text-[11px] uppercase tracking-[0.2em]">VBADRAN</p>
-          <p className={`mt-3 max-w-sm ${arabic ? "font-arabic text-3xl leading-snug" : "font-display text-4xl leading-none tracking-tight"}`}>
+          <p className={`mt-3 max-w-sm ${arabic ? "font-arabic text-3xl leading-snug" : "font-display text-4xl leading-none tracking-normal"}`}>
             {t.auth.line}
           </p>
         </div>

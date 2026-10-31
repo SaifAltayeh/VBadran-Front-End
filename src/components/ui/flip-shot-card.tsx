@@ -70,12 +70,18 @@ function Face({
             {name}
           </p>
           <p className={`mt-2 text-white/75 ${arabic ? "font-arabic text-sm" : "text-[12px] uppercase tracking-[0.16em]"}`}>{meta}</p>
-          <p className={`mt-3 text-white/55 ${arabic ? "font-arabic text-[13px]" : "text-[10px] uppercase tracking-[0.16em]"}`}>{hint}</p>
+          <p
+            className={`mt-3 inline-flex rounded-full bg-primary px-3 py-1 text-white ${
+              arabic ? "font-arabic text-[13px]" : "text-[10px] uppercase tracking-[0.14em]"
+            }`}
+          >
+            {hint}
+          </p>
         </div>
       ) : (
         <p
-          className={`absolute inset-x-0 bottom-0 p-5 text-white/70 md:p-6 ${
-            arabic ? "font-arabic text-[13px]" : "text-[10px] uppercase tracking-[0.16em]"
+          className={`absolute bottom-4 ${arabic ? "right-4" : "left-4"} inline-flex rounded-full bg-primary px-3 py-1.5 text-white ${
+            arabic ? "font-arabic text-[13px]" : "text-[10px] uppercase tracking-[0.14em]"
           }`}
         >
           {hint}
@@ -114,11 +120,12 @@ export function FlipShotCard({
       onClick={() => setFlipped((open) => !open)}
       aria-pressed={flipped}
       aria-label={`${item.client_name}. ${flipped ? t.workAfter : t.workBefore}. ${t.workFlip}`}
-      className="relative block aspect-[4/5] w-full cursor-pointer bg-transparent text-start [perspective:1400px]"
+      className="relative block aspect-[4/5] w-full cursor-pointer rounded-[28px] bg-[#d4e6fb] p-2 text-start shadow-[0_16px_40px_-28px_rgba(36,67,178,0.35)] [perspective:1400px]"
     >
       <div
         className={cn(
           "relative h-full w-full [transform-style:preserve-3d]",
+          rounded ? "rounded-[22px]" : "rounded-[20px]",
           !reduce && "transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
         )}
         style={{ transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
@@ -132,7 +139,7 @@ export function FlipShotCard({
           hint={t.workFlip}
           arabic={arabic}
           showCaption={showCaption}
-          rounded={rounded}
+          rounded
           sizes={sizes}
           priority={priority}
         />
@@ -142,10 +149,10 @@ export function FlipShotCard({
           label={t.workAfter}
           name={item.client_name}
           meta={meta}
-          hint={t.workFlip}
+          hint={t.workFlipBack}
           arabic={arabic}
           showCaption={showCaption}
-          rounded={rounded}
+          rounded
           sizes={sizes}
           back
         />

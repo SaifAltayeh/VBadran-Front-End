@@ -8,6 +8,7 @@ import { useMemo, useState } from "react";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/primitives";
 import { packageFeatureLabels } from "@/lib/constants/site";
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import { cn, ease, formatPrice } from "@/lib/utils";
 import type { Package } from "@/types";
 
@@ -29,7 +30,8 @@ function yearlyOf(item: Package) {
 }
 
 export function PlanCards({ packages }: { packages: Package[] }) {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
+  const site = useSiteHome();
   const [cycle, setCycle] = useState<"monthly" | "yearly">("monthly");
   const tiers = useMemo(() => pickTiers(packages), [packages]);
   const blurbs = t.blurbs as Record<string, string>;
@@ -44,7 +46,7 @@ export function PlanCards({ packages }: { packages: Package[] }) {
     <div className="mx-auto max-w-[980px] text-center">
       <Reveal>
         <h2 className={arabic ? "font-arabic text-[clamp(26px,3.4vw,40px)] font-medium leading-[1.3] text-black" : "font-display text-[clamp(28px,3.6vw,42px)] font-medium leading-[1.2] tracking-[-0.03em] text-black"}>
-          {t.plansTitle}
+          {site.sections.pricing.heading[lang] || t.plansTitle}
         </h2>
       </Reveal>
 

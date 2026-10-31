@@ -4,12 +4,16 @@ import { FormEvent, useState } from "react";
 
 import { Button, Field, SelectField, TextArea } from "@/components/ui/primitives";
 import { errorMessage, submitInquiry } from "@/lib/api";
-import { programs } from "@/data/catalog";
+import { programs as fallbackPrograms } from "@/data/catalog";
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
+import type { Program } from "@/types";
 
-export function ContactForm() {
-  const { t, arabic } = useLang();
+export function ContactForm({ programs }: { programs?: Program[] }) {
+  const { t, lang, arabic } = useLang();
   const copy = t.contactPage;
+  const page = useSiteHome().pages.contact;
+  const options = programs?.length ? programs : fallbackPrograms;
   const [status, setStatus] = useState<"idle" | "loading" | "sent" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -40,8 +44,8 @@ export function ContactForm() {
   if (status === "sent") {
     return (
       <div role="status">
-        <h2 className={arabic ? "font-arabic text-3xl" : "font-display text-3xl tracking-tight md:text-4xl"}>{copy.received}</h2>
-        <p className={`mt-3 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.receivedBody}</p>
+        <h2 className={arabic ? "font-arabic text-3xl" : "font-display text-3xl tracking-tight md:text-4xl"}>{page.received[lang] || copy.received}</h2>
+        <p className={`mt-3 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{page.receivedBody[lang] || copy.receivedBody}</p>
       </div>
     );
   }
@@ -63,7 +67,7 @@ export function ContactForm() {
       </div>
       <Field label={copy.goal} name="goal" required placeholder={copy.goalPh} labelClassName={labelClass} />
       <SelectField label={copy.preferred} name="program" defaultValue="Online Coaching" labelClassName={labelClass}>
-        {programs.map((program) => (
+        {options.map((program) => (
           <option key={program.slug} value={program.title}>
             {program.title}
           </option>
@@ -77,7 +81,7 @@ export function ContactForm() {
       ) : null}
       <div>
         <Button type="submit" disabled={status === "loading"} arrow={false} className={`w-full sm:w-auto ${arabic ? "font-arabic" : ""}`}>
-          {status === "loading" ? copy.sending : copy.send}
+          {status === "loading" ? copy.sending : page.send[lang] || copy.send}
         </Button>
       </div>
     </form>

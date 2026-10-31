@@ -4,6 +4,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useRef } from "react";
 
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import { useDesktop } from "@/lib/use-desktop";
 
 const tilts = [-1.6, 1.25, -0.7, 1.45, -1.15];
@@ -44,7 +45,7 @@ function StepCard({
     >
       <motion.article
         style={reduce ? { rotate: tilts[index] } : { scale, opacity: fade, rotate: tilts[index] }}
-        className="flex h-[min(58vh,460px)] w-[min(90vw,500px)] flex-col justify-between rounded-[18px] border border-black/[0.06] bg-[#e8eef3] px-8 py-9 shadow-[0_24px_50px_rgba(0,0,0,0.08)] md:px-10 md:py-10"
+        className="flex h-[min(58vh,460px)] w-[min(90vw,500px)] flex-col justify-between rounded-[18px] border border-primary/10 bg-[#d4e6fb] px-8 py-9 shadow-[0_24px_50px_rgba(36,67,178,0.12)] md:px-10 md:py-10"
       >
         <div>
           <h3
@@ -74,13 +75,22 @@ function StepCard({
 }
 
 export function ProcessStack() {
-  const { t, process, arabic } = useLang();
+  const { t, lang, process: fallback, arabic } = useLang();
+  const site = useSiteHome();
+  const heading = site.sections.process.heading[lang] || t.howHeading;
+  const process =
+    site.sections.process.cards?.map((card) => ({
+      n: card.n,
+      title: card.title[lang] || "",
+      body: card.body[lang] || "",
+      points: card.points[lang] || [],
+    })) ?? fallback;
   const desktop = useDesktop();
   const reduce = Boolean(useReducedMotion());
 
   if (!desktop || reduce) {
     return (
-      <section id="how" className="bg-white py-16 md:py-24" aria-labelledby="how-heading">
+      <section id="how" className="bg-background py-16 md:py-24" aria-labelledby="how-heading">
         <div className="mx-auto w-full max-w-[1440px] px-5 md:px-10">
           <h2
             id="how-heading"
@@ -90,13 +100,13 @@ export function ProcessStack() {
                 : "font-display text-[clamp(32px,9vw,48px)] font-extrabold uppercase leading-[0.9] tracking-[-0.04em]"
             }
           >
-            {t.howHeading}
+            {heading}
           </h2>
           <ol className="mt-10 space-y-4">
             {process.map((step) => (
               <li
                 key={step.n}
-                className="flex flex-col justify-between rounded-[18px] border border-black/[0.06] bg-[#e8eef3] px-6 py-7"
+                className="flex flex-col justify-between rounded-[18px] border border-primary/10 bg-[#d4e6fb] px-6 py-7"
               >
                 <div>
                   <p className="font-display text-sm font-extrabold text-primary">{step.n}</p>
@@ -125,9 +135,9 @@ export function ProcessStack() {
   }
 
   return (
-    <section id="how" className="relative bg-white pb-32" aria-labelledby="how-heading">
+    <section id="how" className="relative bg-background pb-32" aria-labelledby="how-heading">
       <h2 id="how-heading" className="sr-only">
-        {t.howHeading}
+        {heading}
       </h2>
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
         <p

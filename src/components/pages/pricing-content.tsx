@@ -5,12 +5,14 @@ import { useState } from "react";
 import { Button, Container, Reveal } from "@/components/ui/primitives";
 import { packageFeatureLabels } from "@/lib/constants/site";
 import { useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import { formatPrice } from "@/lib/utils";
 import type { Package } from "@/types";
 
 export function PricingContent({ packages }: { packages: Package[] }) {
-  const { t, arabic } = useLang();
-  const copy = t.pricingPage;
+  const { t, lang, arabic } = useLang();
+  const fallback = t.pricingPage;
+  const copy = useSiteHome().pages.pricing;
   const [selected, setSelected] = useState(
     () => packages.find((item) => item.is_highlighted)?.slug ?? packages[0]?.slug ?? "",
   );
@@ -21,18 +23,18 @@ export function PricingContent({ packages }: { packages: Package[] }) {
         <Container>
           <Reveal>
             <p className={arabic ? "font-arabic text-[15px] text-primary" : "text-[11px] uppercase tracking-[0.22em] text-primary"}>
-              {copy.kicker}
-            </p>
-            <h1
-              className={
-                arabic
-                  ? "mt-4 max-w-[14ch] font-arabic text-[clamp(32px,9vw,68px)] font-extrabold leading-[1.15]"
-                  : "mt-4 max-w-[12ch] font-display text-[clamp(34px,10vw,76px)] font-medium leading-[0.9] tracking-[-0.045em]"
-              }
-            >
-              {copy.title}
-            </h1>
-            <p className={`mt-5 max-w-md text-base leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.lead}</p>
+                {copy.kicker[lang] || fallback.kicker}
+              </p>
+              <h1
+                className={
+                  arabic
+                    ? "mt-4 max-w-[14ch] font-arabic text-[clamp(32px,9vw,68px)] font-extrabold leading-[1.15]"
+                    : "mt-4 max-w-[12ch] font-display text-[clamp(34px,10vw,76px)] font-medium leading-[0.9] tracking-[-0.045em]"
+                }
+              >
+                {copy.title[lang] || fallback.title}
+              </h1>
+              <p className={`mt-5 max-w-md text-base leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.lead[lang] || fallback.lead}</p>
           </Reveal>
         </Container>
       </section>
@@ -69,7 +71,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                           : "text-[11px] uppercase tracking-[0.16em] text-neutral-400"
                     }
                   >
-                    {item.is_highlighted ? copy.chosen : item.support_label}
+                    {item.is_highlighted ? copy.chosen[lang] || fallback.chosen : item.support_label}
                   </p>
                   <h2 className={`mt-3 ${arabic ? "font-arabic text-[28px] font-extrabold" : "font-display text-[30px] tracking-tight"}`}>
                     {item.name}
@@ -96,7 +98,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                       variant={on ? "primary" : "outline"}
                       className={`w-full ${arabic ? "font-arabic" : ""}`}
                     >
-                      {copy.start} {item.name}
+                      {copy.start[lang] || fallback.start} {item.name}
                     </Button>
                   </div>
                 </article>
@@ -110,7 +112,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
         <Container>
           <Reveal>
             <p className={arabic ? "font-arabic text-[15px] text-muted" : "text-[11px] uppercase tracking-[0.22em] text-muted"}>
-              {copy.compare}
+              {copy.compare[lang] || fallback.compare}
             </p>
             <h2
               className={
@@ -119,7 +121,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                   : "mt-3 font-display text-[clamp(32px,4vw,48px)] font-medium leading-[0.9] tracking-[-0.04em]"
               }
             >
-              {copy.included}
+              {copy.included[lang] || fallback.included}
             </h2>
           </Reveal>
           <div className="mt-10 md:hidden">
@@ -131,14 +133,14 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                     {item.name}
                   </p>
                   <div className="flex justify-between border-b border-line py-3 text-sm">
-                    <span className="text-neutral-500">{copy.duration}</span>
+                    <span className="text-neutral-500">{copy.duration[lang] || fallback.duration}</span>
                     <span>{`${item.duration_weeks} ${t.weeks}`}</span>
                   </div>
                   {packageFeatureLabels.map((row) => (
                     <div key={row.key} className="flex justify-between gap-4 border-b border-line py-3 text-sm">
                       <span className={`text-neutral-500 ${arabic ? "font-arabic" : ""}`}>{t.features[row.key]}</span>
                       <span className={item.features[row.key] ? "text-black" : "text-neutral-300"}>
-                        {item.features[row.key] ? copy.yes : "—"}
+                        {item.features[row.key] ? copy.yes[lang] || fallback.yes : "—"}
                       </span>
                     </div>
                   ))}
@@ -166,7 +168,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
               <tbody>
                 <tr className="border-b border-line">
                   <th className={`py-4 pe-4 text-start font-normal text-neutral-500 ${arabic ? "font-arabic" : ""}`}>
-                    {copy.duration}
+                    {copy.duration[lang] || fallback.duration}
                   </th>
                   {packages.map((item) => (
                     <td key={item.slug} className={`py-4 text-center text-sm ${arabic ? "font-arabic" : ""}`}>
@@ -184,7 +186,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                         key={item.slug}
                         className={`py-4 text-center text-sm ${item.features[row.key] ? "text-black" : "text-neutral-300"} ${arabic ? "font-arabic" : ""}`}
                       >
-                        {item.features[row.key] ? copy.yes : "—"}
+                        {item.features[row.key] ? copy.yes[lang] || fallback.yes : "—"}
                       </td>
                     ))}
                   </tr>
@@ -198,7 +200,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
       <section className="border-t border-line py-16 md:py-24">
         <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <Reveal>
-            <p className={`max-w-md text-lg leading-8 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.close}</p>
+            <p className={`max-w-md text-lg leading-8 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.close[lang] || fallback.close}</p>
           </Reveal>
           <Reveal delay={0.08}>
             <Button href="/contact" className={arabic ? "font-arabic" : undefined}>

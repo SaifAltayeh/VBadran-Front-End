@@ -70,7 +70,7 @@ export function LanguageToggle({ className }: { className?: string }) {
         onClick={() => setLang("en")}
         aria-pressed={lang === "en"}
         className={cn(
-          "rounded-full px-2 py-1 text-[11px] font-semibold tracking-[0.08em] sm:px-2.5 sm:tracking-[0.12em]",
+          "rounded-full px-2 py-1 text-[11px] font-semibold tracking-normal sm:px-2.5",
           lang === "en" ? "bg-black text-white" : "text-neutral-500 hover:text-black",
         )}
       >

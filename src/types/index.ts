@@ -258,4 +258,119 @@ export type AuthUser = {
   email: string;
   first_name: string;
   last_name: string;
+  is_staff?: boolean;
+};
+
+export type AdminOverview = {
+  programs: number;
+  packages: number;
+  transformations: number;
+  testimonials: number;
+  inquiries: number;
+  inquiries_new: number;
+  clients: number;
+  orders: number;
+};
+
+export type AdminProgram = {
+  id: number;
+  title: string;
+  slug: string;
+  short_description: string;
+  description: string;
+  price: string;
+  currency: string;
+  duration_weeks: number;
+  difficulty: string;
+  category: string;
+  goal: string;
+  featured_image: string;
+  image_alt: string;
+  is_featured: boolean;
+  is_active: boolean;
+  includes_nutrition: boolean;
+  includes_training: boolean;
+  expected_outcome: string;
+  who_for: string;
+  training_structure: string;
+  nutrition_overview: string;
+  support_overview: string;
+};
+
+export type AdminPackage = {
+  id: number;
+  name: string;
+  slug: string;
+  tagline: string;
+  description: string;
+  duration_weeks: number;
+  price: string;
+  currency: string;
+  expected_outcome: string;
+  is_highlighted: boolean;
+  program: number | null;
+  support_label: string;
+  training_plan: boolean;
+  nutrition: boolean;
+  weekly_checkins: boolean;
+  video_library: boolean;
+  coach_support: boolean;
+  progress_tracking: boolean;
+  program_adjustments: boolean;
+  messaging: boolean;
+  order: number;
+  is_active: boolean;
+};
+
+export type AdminTransformation = {
+  id: number;
+  client_name: string;
+  slug: string;
+  before_image: string;
+  after_image: string;
+  cover_image: string;
+  image_alt: string;
+  duration_weeks: number;
+  result_summary: string;
+  program: number | null;
+  program_name: string;
+  story: string;
+  is_featured: boolean;
+  order: number;
+};
+
+export type AdminTestimonial = {
+  id: number;
+  client_name: string;
+  photo: string;
+  quote: string;
+  program_name: string;
+  rating: number;
+  is_featured: boolean;
+  order: number;
+};
+
+export type AdminInquiry = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  goal: string;
+  fitness_level: string;
+  program: string;
+  message: string;
+  status: "new" | "read" | "closed";
+  created_at: string;
+};
+
+export type AdminClient = {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  is_staff: boolean;
+  is_active: boolean;
+  date_joined: string;
+  phone: string;
+  goal: string;
 };

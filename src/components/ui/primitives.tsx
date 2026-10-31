@@ -168,7 +168,7 @@ export function Field({
       <input
         id={id}
         className={cn(
-          "h-12 w-full min-w-0 rounded-xl border border-line bg-white px-4 text-base text-black outline-none transition-colors focus:border-primary",
+          "h-12 w-full min-w-0 rounded-xl border border-line bg-white px-4 font-sans text-base tracking-normal text-black outline-none transition-colors [word-spacing:0.06em] focus:border-primary",
           className,
         )}
         {...props}

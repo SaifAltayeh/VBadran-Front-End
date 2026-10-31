@@ -8,7 +8,6 @@ import {
   Library,
   LogOut,
   Menu,
-  Salad,
   UserRound,
   X,
 } from "lucide-react";
@@ -25,7 +24,6 @@ const hrefs = [
   { href: "/dashboard/program", key: "program", icon: Dumbbell },
   { href: "/dashboard/training", key: "training", icon: CalendarDays },
   { href: "/dashboard/exercises", key: "exercises", icon: Library },
-  { href: "/dashboard/nutrition", key: "nutrition", icon: Salad },
   { href: "/dashboard/progress", key: "progress", icon: ChartNoAxesColumn },
   { href: "/dashboard/account", key: "account", icon: UserRound },
 ] as const;
@@ -89,9 +87,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <div className={`min-h-screen bg-[#f4f5f7] lg:grid lg:grid-cols-[260px_minmax(0,1fr)] ${arabic ? "font-arabic tracking-normal" : ""}`}>
+    <div className={`min-h-screen bg-[#e8f2fc] lg:grid lg:grid-cols-[260px_minmax(0,1fr)] ${arabic ? "font-arabic tracking-normal" : ""}`}>
       <aside className="hidden p-4 lg:block">
-        <div className="sticky top-4 flex h-[calc(100svh-2rem)] flex-col rounded-[28px] bg-[#eef0f3] p-5">{nav}</div>
+        <div className="sticky top-4 flex h-[calc(100svh-2rem)] flex-col rounded-[28px] bg-[#d4e6fb] p-5">{nav}</div>
       </aside>
       <div className="flex min-h-screen flex-col">
         <header className="flex h-16 items-center justify-between px-5 lg:h-20 lg:px-8">
@@ -111,8 +109,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
         {open ? (
-          <div className="fixed inset-0 z-[60] bg-[#f4f5f7] p-4 lg:hidden">
-            <div className="flex h-full flex-col rounded-[28px] bg-[#eef0f3] p-5">
+          <div className="fixed inset-0 z-[60] bg-[#e8f2fc] p-4 lg:hidden">
+            <div className="flex h-full flex-col rounded-[28px] bg-[#d4e6fb] p-5">
               <button type="button" className="mb-4 self-end" aria-label={t.closeMenu} onClick={() => setOpen(false)}>
                 <X />
               </button>
@@ -123,7 +121,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         <div className="flex-1 px-4 pb-28 lg:px-8 lg:pb-10">{children}</div>
       </div>
       <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-white/80 bg-white/95 px-1 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden" aria-label="Mobile">
-        {[links[0], links[2], links[4], links[5]].map((item) => {
+        {links.filter((item) => ["overview", "training", "progress", "program"].includes(item.key)).map((item) => {
           const Icon = item.icon;
           const on = active(pathname, item.href);
           return (
