@@ -34,5 +34,5 @@ export function embedUrl(url: string) {
 }
 
 export function isDirectVideo(url: string) {
-  return /\.(mp4|webm|ogg)(\?|$)/i.test(url);
+  return url.startsWith("data:video") || /\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(url);
 }
