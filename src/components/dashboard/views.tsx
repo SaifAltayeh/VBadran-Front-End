@@ -19,6 +19,7 @@ import {
   getExercise,
   getExercises,
   getMyProgram,
+  getMyVideos,
   getProgress,
   getWorkout,
   updateAccount,
@@ -26,7 +27,31 @@ import {
 } from "@/lib/api";
 import { useResource } from "@/lib/hooks/use-resource";
 import { formatDate } from "@/lib/utils";
+import { embedUrl, isDirectVideo } from "@/lib/video";
 import type { ProgressEntry } from "@/types";
+
+function VideoPlayer({ url, title }: { url: string; title: string }) {
+  const embed = embedUrl(url);
+  if (embed) {
+    return (
+      <iframe
+        src={embed}
+        title={title}
+        className="absolute inset-0 h-full w-full"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    );
+  }
+  if (isDirectVideo(url)) {
+    return <video src={url} controls className="absolute inset-0 h-full w-full bg-black object-contain" />;
+  }
+  return (
+    <a href={url} target="_blank" rel="noreferrer" className="absolute inset-0 flex items-center justify-center bg-black/80 text-sm text-white">
+      Open video
+    </a>
+  );
+}
 
 function Gate<T>({
   status,
@@ -412,11 +437,17 @@ export function ExerciseDetail({ slug }: { slug: string }) {
           <EmptyState title={t.dash.exerciseMissing} body={t.dash.exerciseMissingBody} href="/dashboard/exercises" action={t.dash.backLibrary} />
         ) : (
           <div className={`grid gap-8 lg:grid-cols-12 ${font}`}>
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] lg:col-span-5">
-              <Media src={exercise.thumbnail} alt={exercise.image_alt} />
-              <div className="absolute inset-x-0 bottom-0 bg-black/70 p-4 text-sm text-white">
-                {exercise.video_url ? t.dash.videoRef : t.dash.videoSoon}
-              </div>
+            <div className="lg:col-span-5">
+              {exercise.video_url ? (
+                <div className="relative aspect-video overflow-hidden rounded-[28px] bg-black">
+                  <VideoPlayer url={exercise.video_url} title={tr(exercise.name)} />
+                </div>
+              ) : (
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[28px]">
+                  <Media src={exercise.thumbnail} alt={exercise.image_alt} />
+                  <div className="absolute inset-x-0 bottom-0 bg-black/70 p-4 text-sm text-white">{t.dash.videoSoon}</div>
+                </div>
+              )}
             </div>
             <div className="lg:col-span-7">
               <p className="text-[11px] text-muted">
@@ -432,6 +463,40 @@ export function ExerciseDetail({ slug }: { slug: string }) {
           </div>
         )
       }
+    </Gate>
+  );
+}
+
+export function VideosView() {
+  const { t, arabic, font, loc: tr } = usePortal();
+  const resource = useResource(useCallback(() => getMyVideos(), []));
+  return (
+    <Gate {...resource}>
+      {(payload) => (
+        <div className={font}>
+          <DashTitle arabic={arabic}>{t.dash.videos}</DashTitle>
+          <p className="mt-2 max-w-2xl text-sm text-neutral-500">{t.dash.videosLead}</p>
+          {!payload.videos.length ? (
+            <div className="mt-8">
+              <EmptyState title={t.dash.noVideos} body={t.dash.noVideosBody} />
+            </div>
+          ) : (
+            <div className="mt-8 grid gap-6 lg:grid-cols-2">
+              {payload.videos.map((video) => (
+                <DashCard key={video.id} className="overflow-hidden p-0">
+                  <div className="relative aspect-video bg-black">
+                    <VideoPlayer url={video.video_url} title={tr(video.title)} />
+                  </div>
+                  <div className="p-5">
+                    <h3 className={`text-lg font-semibold ${arabic ? "font-arabic" : "font-display"}`}>{tr(video.title)}</h3>
+                    {video.description ? <p className="mt-2 text-sm text-neutral-500">{tr(video.description)}</p> : null}
+                  </div>
+                </DashCard>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </Gate>
   );
 }

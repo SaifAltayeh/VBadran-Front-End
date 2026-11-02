@@ -1,7 +1,18 @@
 import { findPackage, findProgram, findTransformation, packages, programs, testimonials, transformations } from "@/data/catalog";
 import { exercises, findExercise, findWorkout, mockAccount, mockDashboard, mockMessages, mockNutrition, mockProgram, mockProgress, workouts } from "@/data/platform";
 import { defaultSiteHome, mergeSiteHome, type SiteHome } from "@/lib/site-home";
-import type { Account, AuthUser, CheckoutResult, DashboardData, MessageThread, MyProgram, NutritionPlan, ProgressEntry, ProgressPhoto } from "@/types";
+import type {
+  Account,
+  AuthUser,
+  CheckoutResult,
+  DashboardData,
+  MessageThread,
+  MyPortalVideos,
+  MyProgram,
+  NutritionPlan,
+  ProgressEntry,
+  ProgressPhoto,
+} from "@/types";
 
 import { apiFetch, isNetworkError, isPreview, withFallback } from "./client";
 
@@ -118,6 +129,8 @@ export async function confirmPasswordReset(payload: { uid: string; token: string
 
 export const getDashboard = () => withFallback<DashboardData>("/dashboard/", mockDashboard);
 export const getMyProgram = () => withFallback<MyProgram>("/my-program/", mockProgram);
+export const getMyVideos = () =>
+  withFallback<MyPortalVideos>("/my-videos/", () => ({ program: null, videos: [] }));
 export const getNutrition = () => withFallback<{ plan: NutritionPlan | null }>("/nutrition/", mockNutrition);
 export const getExercises = () => withFallback("/exercises/", () => exercises);
 export const getWorkouts = () => withFallback("/workouts/", () => workouts);

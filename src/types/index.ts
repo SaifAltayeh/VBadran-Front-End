@@ -96,6 +96,20 @@ export type Exercise = {
   tips: string;
 };
 
+export type PortalVideo = {
+  id: number;
+  title: string;
+  description: string;
+  video_url: string;
+  thumbnail: string;
+  order: number;
+};
+
+export type MyPortalVideos = {
+  program: { id: number; title: string } | null;
+  videos: PortalVideo[];
+};
+
 export type WorkoutExercise = {
   id: number;
   order: number;

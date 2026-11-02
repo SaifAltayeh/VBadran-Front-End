@@ -3,6 +3,7 @@
 import {
   CalendarDays,
   ChartNoAxesColumn,
+  Clapperboard,
   Dumbbell,
   House,
   Library,
@@ -24,6 +25,7 @@ const hrefs = [
   { href: "/dashboard/program", key: "program", icon: Dumbbell },
   { href: "/dashboard/training", key: "training", icon: CalendarDays },
   { href: "/dashboard/exercises", key: "exercises", icon: Library },
+  { href: "/dashboard/videos", key: "videos", icon: Clapperboard },
   { href: "/dashboard/progress", key: "progress", icon: ChartNoAxesColumn },
   { href: "/dashboard/account", key: "account", icon: UserRound },
 ] as const;
