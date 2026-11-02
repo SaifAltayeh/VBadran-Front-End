@@ -42,16 +42,12 @@ export function Hero() {
             {hero.kicker[lang]}
           </motion.p>
           <motion.h1
-            className={`mt-4 max-w-[10ch] font-extrabold text-white ${arabic ? "font-arabic text-[clamp(28px,9vw,58px)] leading-[1.15]" : "font-display text-[clamp(30px,10vw,68px)] uppercase leading-[0.88] tracking-[-0.045em]"}`}
+            className={`mt-4 max-w-[14ch] whitespace-pre-line font-extrabold text-white ${arabic ? "font-arabic text-[clamp(28px,9vw,58px)] leading-[1.15]" : "font-display text-[clamp(30px,10vw,68px)] uppercase leading-[0.92] tracking-[-0.045em]"}`}
             initial={reduce ? false : { opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, ease, delay: 0.28 }}
           >
-            {hero.title[lang][0]}
-            <br />
-            {hero.title[lang][1]}
-            <br />
-            {hero.title[lang][2]}
+            {hero.title[lang]}
           </motion.h1>
           <motion.p
             className={`mt-6 max-w-[28ch] text-base leading-7 text-white/80 ${arabic ? "font-arabic" : ""}`}

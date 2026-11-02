@@ -142,6 +142,19 @@ export function Media({
   sizes?: string;
   position?: string;
 }) {
+  const objectPosition = position ?? crops[src] ?? "center";
+  const remote = src.startsWith("http://") || src.startsWith("https://") || src.startsWith("data:");
+  if (remote) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt={alt}
+        className={cn("absolute inset-0 h-full w-full object-cover", className)}
+        style={{ objectPosition }}
+      />
+    );
+  }
   return (
     <Image
       src={src}
@@ -150,7 +163,7 @@ export function Media({
       priority={priority}
       sizes={sizes}
       className={cn("object-cover", className)}
-      style={{ objectPosition: position ?? crops[src] ?? "center" }}
+      style={{ objectPosition }}
     />
   );
 }
