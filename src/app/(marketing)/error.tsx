@@ -7,7 +7,7 @@ export default function MarketingError({ reset }: { error: Error; reset: () => v
   return (
     <div className="px-6 py-28">
       <h1 className={arabic ? "font-arabic text-4xl md:text-5xl" : "font-display text-5xl tracking-tight"}>{t.errorTitle}</h1>
-      <p className={`mt-4 max-w-md text-neutral-700 ${arabic ? "font-arabic" : ""}`}>{t.errorLead}</p>
+      <p className={`mt-4 max-w-md text-subtitle ${arabic ? "font-arabic" : ""}`}>{t.errorLead}</p>
       <button
         type="button"
         onClick={reset}

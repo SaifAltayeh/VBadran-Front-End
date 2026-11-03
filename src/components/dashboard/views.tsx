@@ -98,7 +98,7 @@ export function OverviewView() {
             {arabic ? "، " : ", "}
             {data.user.first_name}.
           </DashTitle>
-          <p className={`mt-2 text-neutral-500 ${font}`}>
+          <p className={`mt-2 text-subtitle ${font}`}>
             {data.program ? `${tr(data.program.title)} · ${t.dash.week} ${data.program.current_week}` : t.dash.platform}
           </p>
           {!data.program ? (
@@ -129,26 +129,26 @@ export function OverviewView() {
                 />
               </div>
               <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-                <DashCard className="flex min-h-[220px] flex-col justify-between bg-primary text-white">
+                <DashCard className="flex min-h-[220px] flex-col justify-between bg-primary text-on-primary">
                   <div>
-                    <p className={`text-white/70 ${arabic ? "font-arabic" : "text-[12px]"}`}>{t.dash.nextSession}</p>
+                    <p className={`text-on-primary/70 ${arabic ? "font-arabic" : "text-[12px]"}`}>{t.dash.nextSession}</p>
                     {data.next_workout?.workout ? (
                       <>
                         <h2 className={`mt-3 text-[32px] tracking-tight ${arabic ? "font-arabic font-extrabold" : "font-display"}`}>
                           {tr(data.next_workout.workout.title)}
                         </h2>
-                        <p className="mt-2 text-sm text-white/75">
+                        <p className="mt-2 text-sm text-on-primary/75">
                           {tr(data.next_workout.day_label)} · {date(data.next_workout.date)} · {data.next_workout.workout.duration_minutes} {t.dash.min}
                         </p>
                       </>
                     ) : (
-                      <p className="mt-3 text-white/80">{t.dash.noSession}</p>
+                      <p className="mt-3 text-on-primary/80">{t.dash.noSession}</p>
                     )}
                   </div>
                   {data.next_workout?.workout ? (
                     <Link
                       href={`/dashboard/training/${data.next_workout.workout.id}?slot=${data.next_workout.id}`}
-                      className="mt-6 inline-flex h-11 w-fit items-center rounded-full bg-white px-5 text-sm font-medium text-primary"
+                      className="mt-6 inline-flex h-11 w-fit items-center rounded-full bg-on-primary px-5 text-sm font-medium text-primary"
                     >
                       {t.dash.openSession}
                     </Link>
@@ -157,7 +157,7 @@ export function OverviewView() {
                 <div className="grid gap-4">
                   <DashCard>
                     <DashKicker className={font}>{t.dash.coachNote}</DashKicker>
-                    <p className={`mt-3 text-sm leading-6 text-neutral-600 ${font}`}>{tr(data.coach_note) || t.dash.coachNoteEmpty}</p>
+                    <p className={`mt-3 text-sm leading-6 text-subtitle ${font}`}>{tr(data.coach_note) || t.dash.coachNoteEmpty}</p>
                   </DashCard>
                   <DashCard>
                     <DashKicker className={font}>{t.dash.checkIn}</DashKicker>
@@ -169,20 +169,20 @@ export function OverviewView() {
               </div>
               <DashCard className="mt-4">
                 <DashKicker className={font}>{t.dash.thisWeek}</DashKicker>
-                <ul className="mt-4 divide-y divide-[#eef0f3]">
+                <ul className="mt-4 divide-y divide-line">
                   {data.week_schedule.map((item) => (
                     <li key={item.id} className="flex items-center justify-between gap-3 py-3.5 first:pt-0 last:pb-0">
                       <div className="min-w-0">
-                        <p className="text-[13px] text-neutral-400">{tr(item.day_label)}</p>
+                        <p className="text-[13px] text-subtitle">{tr(item.day_label)}</p>
                         <p className="truncate font-medium">{tr(item.workout?.title) || t.dash.restDay}</p>
                       </div>
                       <span
                         className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] ${
                           item.status === "completed"
-                            ? "bg-[#e8f5e9] text-[#1b7a36]"
+                            ? "bg-[#1b4a32] text-[#8fd4a8]"
                             : item.status === "rest"
-                              ? "bg-[#f4f5f7] text-neutral-400"
-                              : "bg-[#eef1fb] text-primary"
+                              ? "bg-background text-subtitle"
+                              : "bg-background text-primary"
                         }`}
                       >
                         {tr(item.status)}
@@ -212,31 +212,31 @@ export function ProgramView() {
             <DashTitle arabic={arabic}>{tr(data.program.title)}</DashTitle>
             <dl className="mt-8 grid gap-4 sm:grid-cols-4">
               <DashCard>
-                <dt className="text-xs text-neutral-400">{t.dash.start}</dt>
+                <dt className="text-xs text-subtitle">{t.dash.start}</dt>
                 <dd className="mt-2 font-medium">{date(data.program.start_date)}</dd>
               </DashCard>
               <DashCard>
-                <dt className="text-xs text-neutral-400">{t.dash.duration}</dt>
+                <dt className="text-xs text-subtitle">{t.dash.duration}</dt>
                 <dd className="mt-2 font-medium">
                   {data.program.duration_weeks} {t.dash.weeksUnit}
                 </dd>
               </DashCard>
               <DashCard>
-                <dt className="text-xs text-neutral-400">{t.dash.currentWeek}</dt>
+                <dt className="text-xs text-subtitle">{t.dash.currentWeek}</dt>
                 <dd className="mt-2 font-medium">{data.program.current_week}</dd>
               </DashCard>
               <DashCard>
-                <dt className="text-xs text-neutral-400">{t.dash.goal}</dt>
+                <dt className="text-xs text-subtitle">{t.dash.goal}</dt>
                 <dd className="mt-2 font-medium">{tr(data.program.goal)}</dd>
               </DashCard>
             </dl>
             <p className="mt-8 max-w-2xl text-lg leading-8">{tr(data.description)}</p>
             <h2 className={`mt-10 text-2xl tracking-tight ${arabic ? "font-extrabold" : "font-display"}`}>{t.dash.coachInstructions}</h2>
-            <p className="mt-3 max-w-2xl text-neutral-600">{tr(data.program.coach_instructions)}</p>
+            <p className="mt-3 max-w-2xl text-subtitle">{tr(data.program.coach_instructions)}</p>
             <h2 className={`mt-10 text-2xl tracking-tight ${arabic ? "font-extrabold" : "font-display"}`}>{t.dash.thisWeek}</h2>
             <DashCard className="mt-4 p-0 md:p-0">
               {data.schedule.map((item) => (
-                <div key={item.id} className="flex items-center justify-between border-b border-[#eef0f3] px-5 py-4 last:border-0">
+                <div key={item.id} className="flex items-center justify-between border-b border-line px-5 py-4 last:border-0">
                   <div>
                     <p className="text-sm text-muted">
                       {tr(item.day_label)} · {date(item.date)}
@@ -265,7 +265,7 @@ export function TrainingView() {
           <div className="mt-8 space-y-3">
             {data.schedule.length === 0 ? <EmptyState title={t.dash.noSessions} body={t.dash.noSessionsBody} /> : null}
             {data.schedule.map((item) => (
-              <article key={item.id} className="grid gap-3 rounded-[24px] bg-white p-5 shadow-[0_10px_32px_-20px_rgba(15,23,42,0.28)] md:grid-cols-[1fr_auto] md:items-center">
+              <article key={item.id} className="grid gap-3 rounded-[24px] bg-card p-5 shadow-[0_10px_32px_-20px_rgba(15,30,46,0.55)] md:grid-cols-[1fr_auto] md:items-center">
                 <div>
                   <p className="text-sm text-muted">
                     {tr(item.day_label)} · {date(item.date)} · {tr(item.status)}
@@ -274,7 +274,7 @@ export function TrainingView() {
                     {tr(item.workout?.title) || t.dash.restDay}
                   </h2>
                   {item.workout ? (
-                    <p className="mt-1 text-sm text-neutral-700">
+                    <p className="mt-1 text-sm text-subtitle">
                       <span className="inline-block">
                         {item.workout.duration_minutes} {t.dash.min}
                       </span>
@@ -317,7 +317,7 @@ export function WorkoutView({ id, slot }: { id: number; slot?: string }) {
               {tr(workout.focus)} · {workout.duration_minutes} {t.dash.min}
             </p>
             <DashTitle arabic={arabic}>{tr(workout.title)}</DashTitle>
-            <p className="mt-4 max-w-2xl text-neutral-800">{tr(workout.description)}</p>
+            <p className="mt-4 max-w-2xl text-title">{tr(workout.description)}</p>
             <h2 className={`mt-10 text-3xl ${arabic ? "font-extrabold" : "font-display"}`}>{t.dash.warmup}</h2>
             <p className="mt-3 max-w-2xl">{tr(workout.warmup)}</p>
             <h2 className={`mt-10 text-3xl ${arabic ? "font-extrabold" : "font-display"}`}>{t.dash.exercises}</h2>
@@ -339,7 +339,7 @@ export function WorkoutView({ id, slot }: { id: number; slot?: string }) {
                         <Link href={`/dashboard/exercises/${row.exercise.slug}`} className="font-medium">
                           {tr(row.exercise.name)}
                         </Link>
-                        {row.notes ? <p className="text-neutral-600">{tr(row.notes)}</p> : null}
+                        {row.notes ? <p className="text-subtitle">{tr(row.notes)}</p> : null}
                       </td>
                       <td>{row.sets}</td>
                       <td>{row.reps}</td>
@@ -358,7 +358,7 @@ export function WorkoutView({ id, slot }: { id: number; slot?: string }) {
             {slot ? (
               <button
                 type="button"
-                className="mt-8 border border-black px-5 py-3 text-sm"
+                className="mt-8 rounded-full border border-primary px-5 py-3 text-sm text-title"
                 onClick={async () => {
                   await completeWorkout(Number(slot));
                   setDone(true);
@@ -392,7 +392,7 @@ export function ExerciseLibrary() {
                   key={item}
                   type="button"
                   onClick={() => setGroup(item)}
-                  className={`shrink-0 border px-3 py-2 text-sm ${group === item ? "border-black bg-black text-white" : "border-line"}`}
+                  className={`shrink-0 rounded-full border px-3 py-2 text-sm ${group === item ? "border-primary bg-primary text-on-primary" : "border-line text-subtitle"}`}
                 >
                   {item === "All" ? t.dash.all : tr(item)}
                 </button>
@@ -408,7 +408,7 @@ export function ExerciseLibrary() {
                 <Link key={item.slug} href={`/dashboard/exercises/${item.slug}`} className="group">
                   <div className="relative aspect-[4/5] overflow-hidden rounded-[24px]">
                     <Media src={item.thumbnail} alt={item.image_alt} className="transition-transform duration-700 group-hover:scale-105" />
-                    <span className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white">
+                    <span className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
                       <Play className="h-4 w-4" />
                     </span>
                   </div>
@@ -475,7 +475,7 @@ export function VideosView() {
       {(payload) => (
         <div className={font}>
           <DashTitle arabic={arabic}>{t.dash.videos}</DashTitle>
-          <p className="mt-2 max-w-2xl text-sm text-neutral-500">{t.dash.videosLead}</p>
+          <p className="mt-2 max-w-2xl text-sm text-subtitle">{t.dash.videosLead}</p>
           {!payload.videos.length ? (
             <div className="mt-8">
               <EmptyState title={t.dash.noVideos} body={t.dash.noVideosBody} />
@@ -489,7 +489,7 @@ export function VideosView() {
                   </div>
                   <div className="p-5">
                     <h3 className={`text-lg font-semibold ${arabic ? "font-arabic" : "font-display"}`}>{tr(video.title)}</h3>
-                    {video.description ? <p className="mt-2 text-sm text-neutral-500">{tr(video.description)}</p> : null}
+                    {video.description ? <p className="mt-2 text-sm text-subtitle">{tr(video.description)}</p> : null}
                   </div>
                 </DashCard>
               ))}
@@ -522,11 +522,11 @@ export function ProgressView() {
               {chart.length ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={chart}>
-                    <CartesianGrid stroke="#efefef" vertical={false} />
-                    <XAxis dataKey="label" tick={{ fontSize: 12 }} axisLine={false} tickLine={false} />
-                    <YAxis domain={["dataMin - 1", "dataMax + 1"]} tick={{ fontSize: 12 }} axisLine={false} tickLine={false} width={40} />
+                    <CartesianGrid stroke="#2a4560" vertical={false} />
+                    <XAxis dataKey="label" tick={{ fontSize: 12, fill: "#9fb3c8" }} axisLine={false} tickLine={false} />
+                    <YAxis domain={["dataMin - 1", "dataMax + 1"]} tick={{ fontSize: 12, fill: "#9fb3c8" }} axisLine={false} tickLine={false} width={40} />
                     <Tooltip />
-                    <Line type="monotone" dataKey="weight" stroke="#2443B2" strokeWidth={2} dot={{ r: 3, fill: "#2443B2" }} />
+                    <Line type="monotone" dataKey="weight" stroke="#4fa3d1" strokeWidth={2} dot={{ r: 3, fill: "#4fa3d1" }} />
                   </LineChart>
                 </ResponsiveContainer>
               ) : (
@@ -561,7 +561,7 @@ export function ProgressView() {
               </table>
             </div>
             <form
-              className="mt-8 grid gap-4 rounded-[24px] bg-white p-5 shadow-[0_10px_32px_-20px_rgba(15,23,42,0.28)] md:grid-cols-4"
+              className="mt-8 grid gap-4 rounded-[24px] bg-card p-5 shadow-[0_10px_32px_-20px_rgba(15,30,46,0.55)] md:grid-cols-4"
               onSubmit={async (event) => {
                 event.preventDefault();
                 const form = new FormData(event.currentTarget);
@@ -583,7 +583,7 @@ export function ProgressView() {
               <Field label={t.dash.weightKg} name="weight" type="number" step="0.1" labelClassName={font} />
               <Field label={t.dash.note} name="notes" labelClassName={font} />
               <div className="self-end">
-                <button type="submit" className="h-12 w-full bg-black text-sm text-white">
+                <button type="submit" className="h-12 w-full rounded-full bg-primary text-sm text-on-primary">
                   {t.dash.addEntry}
                 </button>
               </div>
@@ -595,7 +595,7 @@ export function ProgressView() {
             ) : null}
             <h2 className={`mt-12 text-3xl ${arabic ? "font-extrabold" : "font-display"}`}>{t.dash.progressPhotos}</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
-              {photos.length === 0 ? <p className="text-sm text-neutral-700">{t.dash.noPhotos}</p> : null}
+              {photos.length === 0 ? <p className="text-sm text-subtitle">{t.dash.noPhotos}</p> : null}
               {photos.map((photo) => (
                 <figure key={photo.id}>
                   {photo.url ? (
@@ -623,7 +623,7 @@ export function ProgressView() {
                 <input name="photo" type="file" accept="image/*" className="mt-2 block" />
               </label>
               <Field label={t.dash.caption} name="caption" labelClassName={font} />
-              <button type="submit" className="h-12 bg-black px-5 text-sm text-white">
+              <button type="submit" className="h-12 rounded-full bg-primary px-5 text-sm text-on-primary">
                 {t.dash.upload}
               </button>
             </form>
@@ -645,7 +645,7 @@ export function AccountView() {
       {(account) => (
         <div className={`max-w-2xl ${font}`}>
           <DashTitle arabic={arabic}>{t.dash.account}</DashTitle>
-          <p className="mt-3 text-neutral-700">{account.email}</p>
+          <p className="mt-3 text-subtitle">{account.email}</p>
           <p className="mt-1 text-sm">
             {t.dash.currentProgram}: {tr(account.current_program) || t.dash.none}
           </p>
@@ -674,7 +674,7 @@ export function AccountView() {
             <Field label={t.dash.phone} name="phone" defaultValue={account.phone} labelClassName={font} />
             <Field label={t.country} name="country" defaultValue={account.country} labelClassName={font} />
             <Field label={t.dash.goal} name="goal" defaultValue={account.goal} labelClassName={font} />
-            <button type="submit" className="h-12 bg-black text-sm text-white">
+            <button type="submit" className="h-12 rounded-full bg-primary text-sm text-on-primary">
               {t.dash.saveProfile}
             </button>
           </form>
@@ -695,7 +695,7 @@ export function AccountView() {
             <h2 className="text-3xl font-extrabold">{t.dash.password}</h2>
             <Field label={t.dash.currentPassword} name="current" type="password" labelClassName={font} />
             <Field label={t.dash.newPassword} name="next" type="password" minLength={8} labelClassName={font} />
-            <button type="submit" className="h-12 border border-black text-sm">
+            <button type="submit" className="h-12 rounded-full border border-primary text-sm text-title">
               {t.dash.updatePassword}
             </button>
           </form>
@@ -711,7 +711,7 @@ export function AccountView() {
           ) : null}
           <h2 className="mt-10 text-3xl font-extrabold">{t.dash.purchases}</h2>
           <ul className="mt-4 divide-y divide-line border-y border-line">
-            {(account.purchases || []).length === 0 ? <li className="py-4 text-sm text-neutral-700">{t.dash.noPurchases}</li> : null}
+            {(account.purchases || []).length === 0 ? <li className="py-4 text-sm text-subtitle">{t.dash.noPurchases}</li> : null}
             {(account.purchases || []).map((purchase) => (
               <li key={purchase.order_number} className="flex justify-between py-4 text-sm">
                 <span>

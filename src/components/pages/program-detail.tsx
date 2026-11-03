@@ -32,11 +32,11 @@ export function ProgramDetail({ program }: { program: Program }) {
             <div className="mt-12 max-w-3xl space-y-14 break-words">
               <section>
                 <h2 className={arabic ? "font-arabic text-3xl md:text-4xl" : "font-display text-3xl md:text-4xl"}>{copy.overview}</h2>
-                <p className="mt-4 text-lg leading-8 text-neutral-800">{program.description}</p>
+                <p className="mt-4 text-lg leading-8 text-title">{program.description}</p>
               </section>
               <section>
                 <h2 className={arabic ? "font-arabic text-3xl md:text-4xl" : "font-display text-3xl md:text-4xl"}>{copy.who}</h2>
-                <p className="mt-4 text-lg leading-8 text-neutral-800">{program.who_for}</p>
+                <p className="mt-4 text-lg leading-8 text-title">{program.who_for}</p>
               </section>
               <section>
                 <h2 className={arabic ? "font-arabic text-3xl md:text-4xl" : "font-display text-3xl md:text-4xl"}>{copy.receive}</h2>
@@ -50,19 +50,19 @@ export function ProgramDetail({ program }: { program: Program }) {
               </section>
               <section>
                 <h2 className={arabic ? "font-arabic text-3xl md:text-4xl" : "font-display text-3xl md:text-4xl"}>{copy.structure}</h2>
-                <p className="mt-4 text-lg leading-8 text-neutral-800">{program.training_structure}</p>
+                <p className="mt-4 text-lg leading-8 text-title">{program.training_structure}</p>
               </section>
               <section>
                 <h2 className={arabic ? "font-arabic text-3xl md:text-4xl" : "font-display text-3xl md:text-4xl"}>{copy.nutrition}</h2>
-                <p className="mt-4 text-lg leading-8 text-neutral-800">{program.nutrition_overview}</p>
+                <p className="mt-4 text-lg leading-8 text-title">{program.nutrition_overview}</p>
               </section>
               <section>
                 <h2 className={arabic ? "font-arabic text-3xl md:text-4xl" : "font-display text-3xl md:text-4xl"}>{copy.support}</h2>
-                <p className="mt-4 text-lg leading-8 text-neutral-800">{program.support_overview}</p>
+                <p className="mt-4 text-lg leading-8 text-title">{program.support_overview}</p>
               </section>
               <section>
                 <h2 className={arabic ? "font-arabic text-3xl md:text-4xl" : "font-display text-3xl md:text-4xl"}>{copy.expected}</h2>
-                <p className="mt-4 text-lg leading-8 text-neutral-800">{program.expected_outcome}</p>
+                <p className="mt-4 text-lg leading-8 text-title">{program.expected_outcome}</p>
               </section>
               {program.faqs.length ? (
                 <section>
@@ -78,7 +78,7 @@ export function ProgramDetail({ program }: { program: Program }) {
                 {program.duration_weeks} {t.weeks} · {program.difficulty_label}
               </p>
               <p className="mt-4 font-display text-5xl">{formatPrice(program.price, program.currency)}</p>
-              <p className="mt-4 text-sm leading-6 text-neutral-700">{program.short_description}</p>
+              <p className="mt-4 text-sm leading-6 text-subtitle">{program.short_description}</p>
               <div className="mt-6">
                 <Button href={`/checkout/${program.slug}`} className={`w-full ${arabic ? "font-arabic" : ""}`}>
                   {copy.start}

@@ -121,7 +121,7 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={cn("text-sm tracking-tight", arabic && "font-arabic", active ? "text-black" : "text-neutral-600 hover:text-black")}
+                  className={cn("text-sm tracking-tight", arabic && "font-arabic", active ? "text-title" : "text-subtitle hover:text-title")}
                 >
                   {item.label}
                 </Link>
@@ -144,7 +144,7 @@ export function Header() {
             <LanguageToggle />
             <button
               type="button"
-              className="relative z-[70] inline-flex h-11 w-11 shrink-0 items-center justify-center text-black"
+              className="relative z-[70] inline-flex h-11 w-11 shrink-0 items-center justify-center text-title"
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? t.closeMenu : t.openMenu}

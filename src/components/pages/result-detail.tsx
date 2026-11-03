@@ -23,7 +23,7 @@ export function ResultDetail({ item }: { item: Transformation }) {
             {item.duration_weeks} {t.weeks}
           </p>
           <p className="mt-4 text-lg leading-8">{item.result_summary}</p>
-          <p className="mt-6 text-lg leading-8 text-neutral-800">{item.story}</p>
+          <p className="mt-6 text-lg leading-8 text-title">{item.story}</p>
           {!same ? (
             <div className="mt-8 grid grid-cols-2 gap-3">
               <div className="relative aspect-[3/4] overflow-hidden rounded-2xl">

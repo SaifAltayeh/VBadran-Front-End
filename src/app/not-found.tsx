@@ -11,7 +11,7 @@ export default function NotFound() {
       <h1 className={arabic ? "mt-3 font-arabic text-5xl md:text-7xl" : "mt-3 font-display text-6xl tracking-tight md:text-8xl"}>
         {t.notFoundTitle}
       </h1>
-      <p className={`mt-4 max-w-md text-lg text-neutral-700 ${arabic ? "font-arabic" : ""}`}>{t.notFoundLead}</p>
+      <p className={`mt-4 max-w-md text-lg text-subtitle ${arabic ? "font-arabic" : ""}`}>{t.notFoundLead}</p>
       <div className="mt-8">
         <Button href="/" className={arabic ? "font-arabic" : undefined}>
           {t.backHome}

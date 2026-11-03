@@ -32,7 +32,7 @@ export function ResultsContent({ items }: { items: Transformation[] }) {
                 <br />
                 {page.title[lang]?.[1] || copy.title[1]}
               </h1>
-              <p className={`mt-5 max-w-md text-base leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{page.lead[lang] || copy.lead}</p>
+              <p className={`mt-5 max-w-md text-base leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`}>{page.lead[lang] || copy.lead}</p>
           </Reveal>
         </Container>
       </section>
@@ -51,18 +51,18 @@ export function ResultsContent({ items }: { items: Transformation[] }) {
                   priority={index < 3}
                   sizes="(min-width: 768px) 30vw, 100vw"
                 />
-                <p className={`mt-4 text-neutral-400 ${arabic ? "font-arabic text-[14px]" : "text-[11px] uppercase tracking-[0.16em]"}`}>
+                <p className={`mt-4 text-subtitle ${arabic ? "font-arabic text-[14px]" : "text-[11px] uppercase tracking-[0.16em]"}`}>
                   {item.duration_weeks} {t.weeks} · {item.program_name}
                 </p>
                 <h2 className={`mt-2 ${arabic ? "font-arabic text-[26px] font-extrabold leading-[1.2]" : "font-display text-[28px] tracking-tight"}`}>
                   {item.client_name}
                 </h2>
-                <p className={`mt-2 line-clamp-2 text-sm leading-6 text-neutral-500 ${arabic ? "font-arabic text-[15px] leading-7" : ""}`}>
+                <p className={`mt-2 line-clamp-2 text-sm leading-6 text-subtitle ${arabic ? "font-arabic text-[15px] leading-7" : ""}`}>
                   {item.result_summary}
                 </p>
                 <Link
                   href={`/transformations/${item.slug}`}
-                  className={`mt-3 text-neutral-500 hover:text-black ${arabic ? "font-arabic text-sm" : "text-[11px] uppercase tracking-[0.16em]"}`}
+                  className={`mt-3 text-subtitle hover:text-title ${arabic ? "font-arabic text-sm" : "text-[11px] uppercase tracking-[0.16em]"}`}
                 >
                   {t.viewCase}
                 </Link>
@@ -75,7 +75,7 @@ export function ResultsContent({ items }: { items: Transformation[] }) {
       <section className="border-t border-line py-16 md:py-24">
         <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <Reveal>
-            <p className={`max-w-md text-lg leading-8 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{page.close[lang] || copy.close}</p>
+            <p className={`max-w-md text-lg leading-8 text-subtitle ${arabic ? "font-arabic" : ""}`}>{page.close[lang] || copy.close}</p>
           </Reveal>
           <Reveal delay={0.08}>
             <Button href="/programs" className={arabic ? "font-arabic" : undefined}>

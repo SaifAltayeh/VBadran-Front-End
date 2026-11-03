@@ -23,7 +23,7 @@ export function Footer() {
       <Container className="grid gap-12 pb-16 pt-8 md:grid-cols-12 md:pb-20 md:pt-10">
         <div className="md:col-span-4">
           <p className="font-display text-2xl font-bold tracking-tight">VBADRAN</p>
-          <p className={`mt-4 max-w-xs text-sm leading-6 text-neutral-700 ${arabic ? "font-arabic" : ""}`}>
+          <p className={`mt-4 max-w-xs text-sm leading-6 text-subtitle ${arabic ? "font-arabic" : ""}`}>
             {info.footerBlurb[lang] || t.footerBlurb}
           </p>
         </div>

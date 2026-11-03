@@ -8,14 +8,14 @@ export function DashCard({
   className?: string;
 }) {
   return (
-    <div className={cn("rounded-[24px] bg-white p-5 shadow-[0_10px_32px_-20px_rgba(15,23,42,0.28)] md:p-6", className)}>
+    <div className={cn("rounded-[24px] bg-card p-5 shadow-[0_10px_32px_-20px_rgba(15,30,46,0.55)] md:p-6", className)}>
       {children}
     </div>
   );
 }
 
 export function DashKicker({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <p className={cn("text-[12px] text-neutral-400", className)}>{children}</p>;
+  return <p className={cn("text-[12px] text-subtitle", className)}>{children}</p>;
 }
 
 export function DashTitle({
@@ -30,7 +30,7 @@ export function DashTitle({
   return (
     <h1
       className={cn(
-        "text-[28px] text-neutral-950 md:text-[32px]",
+        "text-[28px] text-title md:text-[32px]",
         arabic ? "font-arabic font-extrabold tracking-normal" : "font-display tracking-tight",
         className,
       )}
@@ -57,7 +57,7 @@ export function StatCard({
       <p className={`mt-3 text-[28px] leading-none tracking-tight md:text-[32px] ${arabic ? "font-arabic font-extrabold" : "font-display"}`}>
         {value}
       </p>
-      {hint ? <p className={`mt-2 text-[13px] text-neutral-400 ${arabic ? "font-arabic" : ""}`}>{hint}</p> : null}
+      {hint ? <p className={`mt-2 text-[13px] text-subtitle ${arabic ? "font-arabic" : ""}`}>{hint}</p> : null}
     </DashCard>
   );
 }

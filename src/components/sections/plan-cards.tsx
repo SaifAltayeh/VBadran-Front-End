@@ -45,20 +45,20 @@ export function PlanCards({ packages }: { packages: Package[] }) {
   return (
     <div className="mx-auto max-w-[980px] text-center">
       <Reveal>
-        <h2 className={arabic ? "font-arabic text-[clamp(26px,3.4vw,40px)] font-medium leading-[1.3] text-black" : "font-display text-[clamp(28px,3.6vw,42px)] font-medium leading-[1.2] tracking-[-0.03em] text-black"}>
+        <h2 className={arabic ? "font-arabic text-[clamp(26px,3.4vw,40px)] font-medium leading-[1.3] text-title" : "font-display text-[clamp(28px,3.6vw,42px)] font-medium leading-[1.2] tracking-[-0.03em] text-title"}>
           {site.sections.pricing.heading[lang] || t.plansTitle}
         </h2>
       </Reveal>
 
       <Reveal delay={0.08}>
-      <div className="mt-6 inline-flex items-center rounded-full bg-[#efefef] p-1">
+      <div className="mt-6 inline-flex items-center rounded-full bg-background p-1 ring-1 ring-line">
         <button
           type="button"
           onClick={() => setCycle("monthly")}
           className={cn(
             "rounded-full px-[14px] py-[6px] text-[13px] font-medium transition-colors",
             arabic && "font-arabic",
-            cycle === "monthly" ? "bg-white text-black shadow-sm" : "text-neutral-500",
+            cycle === "monthly" ? "bg-primary text-on-primary shadow-sm" : "text-subtitle",
           )}
           aria-pressed={cycle === "monthly"}
         >
@@ -70,7 +70,7 @@ export function PlanCards({ packages }: { packages: Package[] }) {
           className={cn(
             "rounded-full px-[14px] py-[6px] text-[13px] font-medium transition-colors",
             arabic && "font-arabic",
-            cycle === "yearly" ? "bg-white text-black shadow-sm" : "text-neutral-500",
+            cycle === "yearly" ? "bg-primary text-on-primary shadow-sm" : "text-subtitle",
           )}
           aria-pressed={cycle === "yearly"}
         >
@@ -91,29 +91,29 @@ export function PlanCards({ packages }: { packages: Package[] }) {
             <RevealItem key={item.slug}>
             <article
               className={cn(
-                "flex h-full flex-col rounded-[28px] bg-[#f4f4f4] p-5 text-left transition-transform duration-500 hover:-translate-y-1.5 sm:p-6",
+                "flex h-full flex-col rounded-[28px] bg-card p-5 text-left transition-transform duration-500 hover:-translate-y-1.5 sm:p-6",
                 featured
                   ? "z-10 pb-6 pt-7 shadow-[0_24px_60px_-28px_rgba(0,0,0,0.35)] lg:px-7 lg:pb-7 lg:pt-8"
                   : "shadow-[0_12px_40px_-30px_rgba(0,0,0,0.2)]",
               )}
             >
-              <h3 className="text-[17px] font-medium tracking-[-0.01em] text-black">{item.name}</h3>
-              <p className={`mt-3 min-h-[48px] text-[13.5px] leading-[1.45] text-neutral-500 ${arabic ? "font-arabic" : ""}`}>
+              <h3 className="text-[17px] font-medium tracking-[-0.01em] text-title">{item.name}</h3>
+              <p className={`mt-3 min-h-[48px] text-[13.5px] leading-[1.45] text-subtitle ${arabic ? "font-arabic" : ""}`}>
                 {blurbs[item.slug] ?? item.tagline}
               </p>
 
-              <div className="mt-5 rounded-[22px] bg-white px-4 pb-4 pt-3.5">
+              <div className="mt-5 rounded-[22px] bg-background px-4 pb-4 pt-3.5">
                 <div className="flex items-end gap-1.5">
                   <motion.p
                     key={`${item.slug}-${amount}`}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35, ease }}
-                    className="text-[34px] font-medium leading-none tracking-[-0.04em] text-black"
+                    className="text-[34px] font-medium leading-none tracking-[-0.04em] text-title"
                   >
                     {formatPrice(amount, item.currency)}
                   </motion.p>
-                  <p className="mb-[2px] text-left text-[10.5px] leading-[1.2] text-neutral-400">
+                  <p className="mb-[2px] text-left text-[10.5px] leading-[1.2] text-subtitle">
                     USD /
                     <br />
                     {unit}
@@ -125,8 +125,8 @@ export function PlanCards({ packages }: { packages: Package[] }) {
                     "mt-3 flex h-11 w-full items-center justify-center rounded-full text-[13px] font-medium transition-colors",
                     arabic && "font-arabic",
                     featured
-                      ? "bg-primary text-white hover:bg-[#1c3694]"
-                      : "bg-[#ececec] text-neutral-800 hover:bg-[#e2e2e2]",
+                      ? "bg-primary text-on-primary hover:bg-[#6bb3dc]"
+                      : "bg-background text-title hover:bg-line",
                   )}
                 >
                   {cta}
@@ -135,7 +135,7 @@ export function PlanCards({ packages }: { packages: Package[] }) {
 
               <ul className="mt-5 space-y-2.5">
                 {bulletsFor(item).map((point) => (
-                  <li key={point} className="flex items-start gap-2.5 text-[13px] leading-5 text-neutral-500">
+                  <li key={point} className="flex items-start gap-2.5 text-[13px] leading-5 text-subtitle">
                     <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2.2} />
                     <span>{point}</span>
                   </li>
@@ -148,7 +148,7 @@ export function PlanCards({ packages }: { packages: Package[] }) {
       </RevealGroup>
 
       <p className="mt-10">
-        <Link href="/pricing" className={`text-[13px] text-neutral-400 transition-colors hover:text-primary ${arabic ? "font-arabic" : ""}`}>
+        <Link href="/pricing" className={`text-[13px] text-subtitle transition-colors hover:text-primary ${arabic ? "font-arabic" : ""}`}>
           {t.compare}
         </Link>
       </p>

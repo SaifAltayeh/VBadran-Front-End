@@ -28,7 +28,7 @@ export function ProgramsContent({ programs }: { programs: Program[] }) {
               >
                 {page.title[lang] || copy.title}
               </h1>
-              <p className={`mt-5 max-w-md text-base leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{page.lead[lang] || copy.lead}</p>
+              <p className={`mt-5 max-w-md text-base leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`}>{page.lead[lang] || copy.lead}</p>
           </Reveal>
         </Container>
       </section>
@@ -42,7 +42,7 @@ export function ProgramsContent({ programs }: { programs: Program[] }) {
       <section className="border-t border-line py-16 md:py-24">
         <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <Reveal>
-            <p className={`max-w-md text-lg leading-8 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{page.close[lang] || copy.unsure}</p>
+            <p className={`max-w-md text-lg leading-8 text-subtitle ${arabic ? "font-arabic" : ""}`}>{page.close[lang] || copy.unsure}</p>
           </Reveal>
           <Reveal delay={0.08}>
             <Button href="/contact" className={arabic ? "font-arabic" : undefined}>

@@ -28,7 +28,7 @@ function WhyList({
   arabic: boolean;
 }) {
   return (
-    <section id="why" className="bg-surface py-16 md:py-24" aria-labelledby="why-heading">
+    <section id="why" className="bg-background py-16 md:py-24" aria-labelledby="why-heading">
       <div className="mx-auto w-full max-w-[1440px] px-5 md:px-10">
         <h2
           id="why-heading"
@@ -53,7 +53,7 @@ function WhyList({
               >
                 {item.title}
               </h3>
-              <p className={`mt-3 max-w-md text-[15px] leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{item.body}</p>
+              <p className={`mt-3 max-w-md text-[15px] leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`}>{item.body}</p>
             </li>
           ))}
         </ol>
@@ -89,7 +89,7 @@ function WhySticky({
   });
 
   return (
-    <section id="why" className="bg-surface" aria-labelledby="why-heading">
+    <section id="why" className="bg-background" aria-labelledby="why-heading">
       <div ref={track} className="relative" style={{ height: `${total * 70}vh` }}>
         <div className="sticky top-20 h-[calc(100svh-5rem)] overflow-hidden">
           <div className="relative flex h-full min-h-[70vh] w-full md:h-full md:min-h-0">
@@ -112,7 +112,7 @@ function WhySticky({
                     cy="50"
                     r="46"
                     fill="none"
-                    stroke="#2443b2"
+                    stroke="#4fa3d1"
                     strokeWidth="1.8"
                     strokeLinecap="round"
                     strokeDasharray={ring}
@@ -120,7 +120,7 @@ function WhySticky({
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary font-display text-lg font-extrabold tabular-nums text-white">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary font-display text-lg font-extrabold tabular-nums text-on-primary">
                     {active + 1}
                   </span>
                 </div>
@@ -128,8 +128,8 @@ function WhySticky({
             </div>
 
             <div className="relative min-w-0 flex-1 overflow-hidden">
-              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-40 bg-gradient-to-b from-surface to-transparent" />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-surface to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-40 bg-gradient-to-b from-background to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-background to-transparent" />
               <div className="absolute inset-0">
                 <motion.ul className="absolute start-0 end-0 top-1/2 w-full" style={{ marginTop: -ITEM / 2, y: listY }}>
                   {reasons.map((item, index) => (
@@ -148,8 +148,8 @@ function WhySticky({
                       <p
                         className={
                           arabic
-                            ? "w-[min(18ch,46vw)] shrink-0 font-arabic text-[clamp(26px,3.4vw,48px)] font-extrabold leading-[1.15] text-black transition-opacity duration-200"
-                            : "w-[min(16ch,48vw)] shrink-0 font-display text-[clamp(30px,3.8vw,56px)] font-extrabold uppercase leading-[0.95] tracking-[-0.045em] text-black transition-opacity duration-200"
+                            ? "w-[min(18ch,46vw)] shrink-0 font-arabic text-[clamp(26px,3.4vw,48px)] font-extrabold leading-[1.15] text-title transition-opacity duration-200"
+                            : "w-[min(16ch,48vw)] shrink-0 font-display text-[clamp(30px,3.8vw,56px)] font-extrabold uppercase leading-[0.95] tracking-[-0.045em] text-title transition-opacity duration-200"
                         }
                         style={{ opacity: lineOpacity(index, active) }}
                       >

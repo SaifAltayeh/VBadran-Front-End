@@ -115,7 +115,7 @@ export function AboutUs() {
             </Reveal>
 
             <Reveal delay={0.08} className="lg:col-span-7">
-              <div className="space-y-5 text-base leading-8 text-neutral-700 md:text-lg">
+              <div className="space-y-5 text-base leading-8 text-subtitle md:text-lg">
                 {copy.paragraphs.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
                 ))}
@@ -127,7 +127,7 @@ export function AboutUs() {
                       <span className="font-display text-sm font-extrabold text-primary">{String(index + 1).padStart(2, "0")}</span>
                       <span className={arabic ? "text-lg font-semibold" : "font-display text-lg tracking-tight"}>{item.title}</span>
                     </dt>
-                    <dd className="mt-3 text-sm leading-6 text-neutral-500">{item.body}</dd>
+                    <dd className="mt-3 text-sm leading-6 text-subtitle">{item.body}</dd>
                   </div>
                 ))}
               </dl>
@@ -175,7 +175,7 @@ export function TransformationBand({ items }: { items: Transformation[] }) {
             </h2>
             <Link
               href="/transformations"
-              className={`text-neutral-500 hover:text-black ${arabic ? "font-arabic text-sm" : "text-[11px] uppercase tracking-[0.18em]"}`}
+              className={`text-subtitle hover:text-title ${arabic ? "font-arabic text-sm" : "text-[11px] uppercase tracking-[0.18em]"}`}
             >
               {site.sections.transformations.link[lang] || t.allResults}
             </Link>
@@ -205,7 +205,7 @@ export function Testimonials({ items }: { items: Testimonial[] }) {
                   className={
                     index === 0
                       ? "font-display text-[clamp(22px,5.4vw,48px)] font-medium leading-[1.2] tracking-[-0.03em]"
-                      : "font-display text-[clamp(18px,4.4vw,32px)] font-medium leading-[1.25] tracking-[-0.02em] text-neutral-800"
+                      : "font-display text-[clamp(18px,4.4vw,32px)] font-medium leading-[1.25] tracking-[-0.02em] text-title"
                   }
                 >
                   “{item.quote}”
@@ -247,7 +247,7 @@ export function FinalCta() {
   const { t, lang, arabic } = useLang();
   const { sections } = useSiteHome();
   return (
-    <section className="bg-background text-black">
+    <section className="bg-background text-title">
       <Container className="flex flex-col items-start justify-between gap-8 pb-8 pt-20 md:flex-row md:items-end md:pb-10 md:pt-24">
         <Reveal>
           <h2
@@ -259,7 +259,7 @@ export function FinalCta() {
           >
             {sections.cta.title[lang] || t.readyTitle}
           </h2>
-          <p className={`mt-5 max-w-sm text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{sections.cta.lead[lang] || t.readyLead}</p>
+          <p className={`mt-5 max-w-sm text-subtitle ${arabic ? "font-arabic" : ""}`}>{sections.cta.lead[lang] || t.readyLead}</p>
         </Reveal>
         <Reveal delay={0.1}>
           <Button href={sections.cta.href || "/programs"} className={arabic ? "font-arabic" : undefined}>

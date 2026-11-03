@@ -45,7 +45,7 @@ function StepCard({
     >
       <motion.article
         style={reduce ? { rotate: tilts[index] } : { scale, opacity: fade, rotate: tilts[index] }}
-        className="flex h-[min(58vh,460px)] w-[min(90vw,500px)] flex-col justify-between rounded-[18px] border border-primary/10 bg-[#d4e6fb] px-8 py-9 shadow-[0_24px_50px_rgba(36,67,178,0.12)] md:px-10 md:py-10"
+        className="flex h-[min(58vh,460px)] w-[min(90vw,500px)] flex-col justify-between rounded-[18px] border border-primary/20 bg-card px-8 py-9 shadow-[0_24px_50px_rgba(15,30,46,0.4)] md:px-10 md:py-10"
       >
         <div>
           <h3
@@ -57,7 +57,7 @@ function StepCard({
           >
             {step.title}
           </h3>
-          <p className={`mt-8 max-w-[32ch] text-[15px] leading-7 text-neutral-800 ${arabic ? "font-arabic" : ""}`}>{step.body}</p>
+          <p className={`mt-8 max-w-[32ch] text-[15px] leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`}>{step.body}</p>
         </div>
         <div className="flex items-end justify-between gap-6">
           <ul className={`space-y-1 text-[15px] font-medium leading-6 ${arabic ? "font-arabic" : ""}`}>
@@ -106,7 +106,7 @@ export function ProcessStack() {
             {process.map((step) => (
               <li
                 key={step.n}
-                className="flex flex-col justify-between rounded-[18px] border border-primary/10 bg-[#d4e6fb] px-6 py-7"
+                className="flex flex-col justify-between rounded-[18px] border border-primary/20 bg-card px-6 py-7"
               >
                 <div>
                   <p className="font-display text-sm font-extrabold text-primary">{step.n}</p>
@@ -119,7 +119,7 @@ export function ProcessStack() {
                   >
                     {step.title}
                   </h3>
-                  <p className={`mt-4 text-[15px] leading-7 text-neutral-700 ${arabic ? "font-arabic" : ""}`}>{step.body}</p>
+                  <p className={`mt-4 text-[15px] leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`}>{step.body}</p>
                 </div>
                 <ul className={`mt-6 space-y-1 text-[15px] font-medium ${arabic ? "font-arabic" : ""}`}>
                   {step.points.map((point) => (
@@ -141,7 +141,7 @@ export function ProcessStack() {
       </h2>
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
         <p
-          className={`sticky top-[12vh] text-center font-extrabold text-[#c8c8c8] blur-[10px] ${
+          className={`sticky top-[12vh] text-center font-extrabold text-line blur-[10px] ${
             arabic
               ? "font-arabic text-[clamp(72px,16vw,220px)] leading-[1.05]"
               : "font-display text-[clamp(92px,20vw,280px)] uppercase leading-[0.78] tracking-[-0.07em]"

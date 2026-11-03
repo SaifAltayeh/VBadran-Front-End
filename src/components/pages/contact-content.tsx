@@ -33,25 +33,25 @@ export function ContactContent({ programs }: { programs: Program[] }) {
         >
           {copy.title[lang] || fallback.title}
         </h1>
-        <p className={`mt-5 max-w-md text-base leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.lead[lang] || fallback.lead}</p>
+        <p className={`mt-5 max-w-md text-base leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`}>{copy.lead[lang] || fallback.lead}</p>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          <a href={`mailto:${email}`} className="rounded-[24px] border border-line bg-white p-5 transition-colors hover:border-primary">
-            <p className={arabic ? "font-arabic text-[14px] text-neutral-400" : "text-[12px] uppercase tracking-[0.16em] text-neutral-400"}>
+          <a href={`mailto:${email}`} className="rounded-[24px] border border-line bg-card p-5 transition-colors hover:border-primary">
+            <p className={arabic ? "font-arabic text-[14px] text-subtitle" : "text-[12px] uppercase tracking-[0.16em] text-subtitle"}>
               {copy.emailLabel[lang] || fallback.email}
             </p>
             <p className="mt-3 break-all font-display text-xl tracking-tight md:text-2xl">{email}</p>
           </a>
-          <a href={phoneHref} className="rounded-[24px] border border-line bg-white p-5 transition-colors hover:border-primary">
-            <p className={arabic ? "font-arabic text-[14px] text-neutral-400" : "text-[12px] uppercase tracking-[0.16em] text-neutral-400"}>
+          <a href={phoneHref} className="rounded-[24px] border border-line bg-card p-5 transition-colors hover:border-primary">
+            <p className={arabic ? "font-arabic text-[14px] text-subtitle" : "text-[12px] uppercase tracking-[0.16em] text-subtitle"}>
               {copy.phoneLabel[lang] || fallback.phone}
             </p>
             <p className="mt-3 font-display text-xl tracking-tight md:text-2xl" dir="ltr">
               {phone}
             </p>
           </a>
-          <div className="rounded-[24px] border border-line bg-white p-5 sm:col-span-2 xl:col-span-1">
-            <p className={arabic ? "font-arabic text-[14px] text-neutral-400" : "text-[12px] uppercase tracking-[0.16em] text-neutral-400"}>
+          <div className="rounded-[24px] border border-line bg-card p-5 sm:col-span-2 xl:col-span-1">
+            <p className={arabic ? "font-arabic text-[14px] text-subtitle" : "text-[12px] uppercase tracking-[0.16em] text-subtitle"}>
               {t.social}
             </p>
             <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
@@ -64,7 +64,7 @@ export function ContactContent({ programs }: { programs: Program[] }) {
           </div>
         </div>
 
-        <div className="mt-6 rounded-[24px] border border-line bg-white p-5 md:mt-8 md:p-8">
+        <div className="mt-6 rounded-[24px] border border-line bg-card p-5 md:mt-8 md:p-8">
           <ContactForm programs={programs} />
         </div>
       </Container>

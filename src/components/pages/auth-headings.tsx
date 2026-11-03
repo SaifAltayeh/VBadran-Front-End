@@ -7,7 +7,7 @@ export function LoginHeading() {
   return (
     <>
       <h1 className={arabic ? "font-arabic text-4xl md:text-5xl" : "font-sans text-5xl font-semibold tracking-normal"}>{t.auth.welcome}</h1>
-      <p className={`mt-3 text-neutral-700 ${arabic ? "font-arabic" : ""}`}>{t.auth.welcomeLead}</p>
+      <p className={`mt-3 text-subtitle ${arabic ? "font-arabic" : ""}`}>{t.auth.welcomeLead}</p>
     </>
   );
 }
@@ -17,7 +17,7 @@ export function RegisterHeading() {
   return (
     <>
       <h1 className={arabic ? "font-arabic text-4xl md:text-5xl" : "font-display text-5xl tracking-tight"}>{t.createTitle}</h1>
-      <p className={`mt-3 text-neutral-700 ${arabic ? "font-arabic" : ""}`}>{t.createLead}</p>
+      <p className={`mt-3 text-subtitle ${arabic ? "font-arabic" : ""}`}>{t.createLead}</p>
     </>
   );
 }
@@ -27,7 +27,7 @@ export function ForgotHeading() {
   return (
     <>
       <h1 className={arabic ? "font-arabic text-4xl md:text-5xl" : "font-display text-5xl tracking-tight"}>{t.resetTitle}</h1>
-      <p className={`mt-3 text-neutral-700 ${arabic ? "font-arabic" : ""}`}>{t.resetLead}</p>
+      <p className={`mt-3 text-subtitle ${arabic ? "font-arabic" : ""}`}>{t.resetLead}</p>
     </>
   );
 }

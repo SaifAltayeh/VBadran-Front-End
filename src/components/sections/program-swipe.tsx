@@ -43,7 +43,7 @@ export function ProgramSwipe({ programs }: { programs: Program[] }) {
           >
             {site.sections.programs.heading[lang] || t.programsHeading}
           </h2>
-          <Link href="/programs" className={`shrink-0 text-sm text-neutral-700 hover:text-black ${arabic ? "font-arabic" : ""}`}>
+          <Link href="/programs" className={`shrink-0 text-sm text-subtitle hover:text-title ${arabic ? "font-arabic" : ""}`}>
             {site.sections.programs.link[lang] || t.viewPrograms}
           </Link>
         </div>
@@ -80,7 +80,7 @@ export function ProgramSwipe({ programs }: { programs: Program[] }) {
               const center = trio.length === 1 || index === 1;
               const sharp = index === focused;
               const tile = (
-                <div className="relative h-full overflow-hidden rounded-[14px] bg-surface">
+                <div className="relative h-full overflow-hidden rounded-[14px] bg-card">
                   <Media
                     src={program.featured_image}
                     alt={program.image_alt}
@@ -142,7 +142,7 @@ export function ProgramSwipe({ programs }: { programs: Program[] }) {
               type="button"
               aria-label={t.prevProgram}
               onClick={() => go(-1)}
-              className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-black shadow-md md:hidden"
+              className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-card/90 text-title shadow-md md:hidden"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
@@ -150,7 +150,7 @@ export function ProgramSwipe({ programs }: { programs: Program[] }) {
               type="button"
               aria-label={t.nextProgram}
               onClick={() => go(1)}
-              className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-black shadow-md md:hidden"
+              className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-card/90 text-title shadow-md md:hidden"
             >
               <ChevronRight className="h-6 w-6" />
             </button>
@@ -163,7 +163,7 @@ export function ProgramSwipe({ programs }: { programs: Program[] }) {
                   onClick={() => setCurrent(index)}
                   className={cn(
                     "h-1.5 rounded-full transition-all",
-                    index === current ? "w-5 bg-black" : "w-1.5 bg-neutral-300",
+                    index === current ? "w-5 bg-primary" : "w-1.5 bg-line",
                   )}
                 />
               ))}

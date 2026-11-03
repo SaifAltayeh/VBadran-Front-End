@@ -22,11 +22,11 @@ type ButtonProps = {
 };
 
 const buttonStyles = {
-  primary: "bg-primary text-white hover:bg-[#1c3694]",
-  secondary: "bg-black text-white hover:bg-[#1a1a1a]",
-  outline: "border border-black bg-white text-black hover:bg-black hover:text-white",
-  white: "bg-white text-black hover:bg-surface",
-  outlineLight: "border border-white bg-transparent text-white hover:bg-white hover:text-black",
+  primary: "bg-primary text-on-primary hover:bg-[#6bb3dc]",
+  secondary: "bg-card text-title hover:bg-surface-2",
+  outline: "border border-primary bg-transparent text-title hover:bg-primary hover:text-on-primary",
+  white: "bg-primary text-on-primary hover:bg-[#6bb3dc]",
+  outlineLight: "border border-white bg-transparent text-white hover:bg-white hover:text-on-primary",
 };
 
 export function Button({
@@ -181,7 +181,7 @@ export function Field({
       <input
         id={id}
         className={cn(
-          "h-12 w-full min-w-0 rounded-xl border border-line bg-white px-4 font-sans text-base tracking-normal text-black outline-none transition-colors [word-spacing:0.06em] focus:border-primary",
+          "h-12 w-full min-w-0 rounded-xl border border-line bg-card px-4 font-sans text-base tracking-normal text-title outline-none transition-colors [word-spacing:0.06em] focus:border-primary",
           className,
         )}
         {...props}
@@ -201,7 +201,7 @@ export function TextArea({
       <span className={cn("mb-2 block text-[13px] text-muted", labelClassName)}>{label}</span>
       <textarea
         id={id}
-        className="min-h-36 w-full min-w-0 rounded-xl border border-line bg-white px-4 py-3 text-base outline-none focus:border-primary"
+        className="min-h-36 w-full min-w-0 rounded-xl border border-line bg-card px-4 py-3 text-base text-title outline-none focus:border-primary"
         {...props}
       />
     </label>
@@ -220,7 +220,7 @@ export function SelectField({
       <span className={cn("mb-2 block text-[13px] text-muted", labelClassName)}>{label}</span>
       <select
         id={id}
-        className="h-12 w-full min-w-0 rounded-xl border border-line bg-white px-4 text-base outline-none focus:border-primary"
+        className="h-12 w-full min-w-0 rounded-xl border border-line bg-card px-4 text-base text-title outline-none focus:border-primary"
         {...props}
       >
         {children}
@@ -248,7 +248,7 @@ export function Accordion({ items }: { items: { q: string; a: string }[] }) {
             </button>
             <div className={cn("grid transition-[grid-template-rows] duration-500", expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]")}>
               <div className="overflow-hidden">
-                <p className="max-w-3xl pb-6 text-base leading-7 text-neutral-700 md:text-lg">{item.a}</p>
+                <p className="max-w-3xl pb-6 text-base leading-7 text-subtitle md:text-lg">{item.a}</p>
               </div>
             </div>
           </div>
@@ -263,7 +263,7 @@ export function EmptyState({ title, body, href, action }: { title: string; body:
   return (
     <div className={`border border-line px-6 py-16 text-center ${arabic ? "font-arabic" : ""}`}>
       <h2 className={arabic ? "text-3xl font-extrabold" : "font-display text-3xl"}>{title}</h2>
-      <p className="mx-auto mt-3 max-w-md text-neutral-700">{body}</p>
+      <p className="mx-auto mt-3 max-w-md text-subtitle">{body}</p>
       {href && action ? (
         <div className="mt-6">
           <Button href={href}>{action}</Button>
@@ -278,7 +278,7 @@ export function ErrorState({ onRetry }: { onRetry?: () => void }) {
   return (
     <div className={`border border-line px-6 py-16 text-center ${arabic ? "font-arabic" : ""}`} role="alert">
       <h2 className={arabic ? "text-3xl font-extrabold" : "font-display text-3xl"}>{t.dash.loadError}</h2>
-      <p className="mt-3 text-neutral-700">{t.dash.loadErrorBody}</p>
+      <p className="mt-3 text-subtitle">{t.dash.loadErrorBody}</p>
       {onRetry ? (
         <button type="button" onClick={onRetry} className="mt-6 text-sm underline">
           {t.dash.tryAgain}

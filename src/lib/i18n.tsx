@@ -71,7 +71,7 @@ export function LanguageToggle({ className }: { className?: string }) {
         aria-pressed={lang === "en"}
         className={cn(
           "rounded-full px-2 py-1 text-[11px] font-semibold tracking-normal sm:px-2.5",
-          lang === "en" ? "bg-black text-white" : "text-neutral-500 hover:text-black",
+          lang === "en" ? "bg-primary text-on-primary" : "text-subtitle hover:text-title",
         )}
       >
         EN
@@ -82,7 +82,7 @@ export function LanguageToggle({ className }: { className?: string }) {
         aria-pressed={lang === "ar"}
         className={cn(
           "rounded-full px-2 py-1 font-arabic text-[12px] sm:px-2.5",
-          lang === "ar" ? "bg-black text-white" : "text-neutral-500 hover:text-black",
+          lang === "ar" ? "bg-primary text-on-primary" : "text-subtitle hover:text-title",
         )}
       >
         <span className="sm:hidden">AR</span>

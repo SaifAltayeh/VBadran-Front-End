@@ -45,7 +45,7 @@ export function ContactForm({ programs }: { programs?: Program[] }) {
     return (
       <div role="status">
         <h2 className={arabic ? "font-arabic text-3xl" : "font-display text-3xl tracking-tight md:text-4xl"}>{page.received[lang] || copy.received}</h2>
-        <p className={`mt-3 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{page.receivedBody[lang] || copy.receivedBody}</p>
+        <p className={`mt-3 text-subtitle ${arabic ? "font-arabic" : ""}`}>{page.receivedBody[lang] || copy.receivedBody}</p>
       </div>
     );
   }

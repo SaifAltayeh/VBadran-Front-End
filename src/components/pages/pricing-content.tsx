@@ -34,7 +34,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
               >
                 {copy.title[lang] || fallback.title}
               </h1>
-              <p className={`mt-5 max-w-md text-base leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.lead[lang] || fallback.lead}</p>
+              <p className={`mt-5 max-w-md text-base leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`}>{copy.lead[lang] || fallback.lead}</p>
           </Reveal>
         </Container>
       </section>
@@ -58,7 +58,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                       setSelected(item.slug);
                     }
                   }}
-                  className="flex cursor-pointer flex-col rounded-[24px] border border-line bg-white p-6"
+                  className={`flex cursor-pointer flex-col rounded-[24px] border bg-card p-6 ${on ? "border-primary" : "border-line"}`}
                 >
                   <p
                     className={
@@ -67,8 +67,8 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                           ? "font-arabic text-[14px] text-primary"
                           : "text-[11px] uppercase tracking-[0.16em] text-primary"
                         : arabic
-                          ? "font-arabic text-[14px] text-neutral-400"
-                          : "text-[11px] uppercase tracking-[0.16em] text-neutral-400"
+                          ? "font-arabic text-[14px] text-subtitle"
+                          : "text-[11px] uppercase tracking-[0.16em] text-subtitle"
                     }
                   >
                     {item.is_highlighted ? copy.chosen[lang] || fallback.chosen : item.support_label}
@@ -76,18 +76,18 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                   <h2 className={`mt-3 ${arabic ? "font-arabic text-[28px] font-extrabold" : "font-display text-[30px] tracking-tight"}`}>
                     {item.name}
                   </h2>
-                  <p className={`mt-3 text-sm leading-6 text-neutral-500 xl:min-h-[72px] ${arabic ? "font-arabic text-[15px] leading-7" : ""}`}>
+                  <p className={`mt-3 text-sm leading-6 text-subtitle xl:min-h-[72px] ${arabic ? "font-arabic text-[15px] leading-7" : ""}`}>
                     {item.tagline}
                   </p>
                   <p className="mt-6 font-display text-[40px] leading-none tracking-[-0.04em]">
                     {formatPrice(item.price, item.currency)}
                   </p>
-                  <p className={`mt-2 text-neutral-400 ${arabic ? "font-arabic text-[14px]" : "text-[11px] uppercase tracking-[0.16em]"}`}>
+                  <p className={`mt-2 text-subtitle ${arabic ? "font-arabic text-[14px]" : "text-[11px] uppercase tracking-[0.16em]"}`}>
                     {item.duration_weeks} {t.weeks}
                   </p>
                   <ul className="mt-6 flex-1 space-y-2.5">
                     {included.map((row) => (
-                      <li key={row.key} className={`text-sm text-neutral-600 ${arabic ? "font-arabic text-[15px]" : ""}`}>
+                      <li key={row.key} className={`text-sm text-subtitle ${arabic ? "font-arabic text-[15px]" : ""}`}>
                         {t.features[row.key]}
                       </li>
                     ))}
@@ -133,13 +133,13 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                     {item.name}
                   </p>
                   <div className="flex justify-between border-b border-line py-3 text-sm">
-                    <span className="text-neutral-500">{copy.duration[lang] || fallback.duration}</span>
+                    <span className="text-subtitle">{copy.duration[lang] || fallback.duration}</span>
                     <span>{`${item.duration_weeks} ${t.weeks}`}</span>
                   </div>
                   {packageFeatureLabels.map((row) => (
                     <div key={row.key} className="flex justify-between gap-4 border-b border-line py-3 text-sm">
-                      <span className={`text-neutral-500 ${arabic ? "font-arabic" : ""}`}>{t.features[row.key]}</span>
-                      <span className={item.features[row.key] ? "text-black" : "text-neutral-300"}>
+                      <span className={`text-subtitle ${arabic ? "font-arabic" : ""}`}>{t.features[row.key]}</span>
+                      <span className={item.features[row.key] ? "text-title" : "text-subtitle/50"}>
                         {item.features[row.key] ? copy.yes[lang] || fallback.yes : "—"}
                       </span>
                     </div>
@@ -167,7 +167,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
               </thead>
               <tbody>
                 <tr className="border-b border-line">
-                  <th className={`py-4 pe-4 text-start font-normal text-neutral-500 ${arabic ? "font-arabic" : ""}`}>
+                  <th className={`py-4 pe-4 text-start font-normal text-subtitle ${arabic ? "font-arabic" : ""}`}>
                     {copy.duration[lang] || fallback.duration}
                   </th>
                   {packages.map((item) => (
@@ -178,13 +178,13 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                 </tr>
                 {packageFeatureLabels.map((row) => (
                   <tr key={row.key} className="border-b border-line">
-                    <th className={`py-4 pe-4 text-start font-normal text-neutral-500 ${arabic ? "font-arabic" : ""}`}>
+                    <th className={`py-4 pe-4 text-start font-normal text-subtitle ${arabic ? "font-arabic" : ""}`}>
                       {t.features[row.key]}
                     </th>
                     {packages.map((item) => (
                       <td
                         key={item.slug}
-                        className={`py-4 text-center text-sm ${item.features[row.key] ? "text-black" : "text-neutral-300"} ${arabic ? "font-arabic" : ""}`}
+                        className={`py-4 text-center text-sm ${item.features[row.key] ? "text-title" : "text-subtitle/50"} ${arabic ? "font-arabic" : ""}`}
                       >
                         {item.features[row.key] ? copy.yes[lang] || fallback.yes : "—"}
                       </td>
@@ -200,7 +200,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
       <section className="border-t border-line py-16 md:py-24">
         <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
           <Reveal>
-            <p className={`max-w-md text-lg leading-8 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{copy.close[lang] || fallback.close}</p>
+            <p className={`max-w-md text-lg leading-8 text-subtitle ${arabic ? "font-arabic" : ""}`}>{copy.close[lang] || fallback.close}</p>
           </Reveal>
           <Reveal delay={0.08}>
             <Button href="/contact" className={arabic ? "font-arabic" : undefined}>

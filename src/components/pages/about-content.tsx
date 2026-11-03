@@ -25,7 +25,7 @@ function StoryChapter({
 
   return (
     <div className="grid w-full items-center gap-6 md:grid-cols-[4.5rem_minmax(0,1fr)_minmax(180px,0.55fr)] md:gap-10">
-      <p className="text-[15px] tracking-[0.08em] text-neutral-400">/{String(index + 1).padStart(2, "0")}</p>
+      <p className="text-[15px] tracking-[0.08em] text-subtitle">/{String(index + 1).padStart(2, "0")}</p>
       <h3
         className={
           arabic
@@ -43,7 +43,7 @@ function StoryChapter({
           title
         )}
       </h3>
-      <p className={`max-w-[28ch] text-[13px] leading-6 text-neutral-500 md:justify-self-end ${arabic ? "font-arabic text-[15px] leading-7" : ""}`}>
+      <p className={`max-w-[28ch] text-[13px] leading-6 text-subtitle md:justify-self-end ${arabic ? "font-arabic text-[15px] leading-7" : ""}`}>
         {body}
       </p>
     </div>
@@ -184,7 +184,7 @@ export function AboutContent() {
               <p className={`mt-8 ${arabic ? "font-arabic text-xl font-semibold" : "font-display text-2xl tracking-tight"}`}>
                 {page.name[lang] || fallback.name}
               </p>
-              <p className={`mt-3 max-w-md text-base leading-7 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>
+              <p className={`mt-3 max-w-md text-base leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`}>
                 {page.lead[lang] || fallback.lead}
               </p>
               <div className="mt-8">
@@ -194,7 +194,7 @@ export function AboutContent() {
               </div>
             </Reveal>
             <Reveal delay={0.08} className="lg:col-span-5">
-              <div className="relative aspect-[3/4] overflow-hidden rounded-[28px] bg-[#0a1a4a] md:rounded-[32px]">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-[28px] bg-card md:rounded-[32px]">
                 <Media
                   src={page.image || "/images/hero/coach-portrait.jpg"}
                   alt={page.imageAlt[lang] || fallback.name}
@@ -247,7 +247,7 @@ export function AboutContent() {
                   <h3 className={`mt-4 ${arabic ? "font-arabic text-2xl font-semibold" : "font-display text-2xl tracking-tight"}`}>
                     {step.title[lang] || step.title.en}
                   </h3>
-                  <p className={`mt-3 text-sm leading-6 text-neutral-600 ${arabic ? "font-arabic" : ""}`}>{step.body[lang] || step.body.en}</p>
+                  <p className={`mt-3 text-sm leading-6 text-subtitle ${arabic ? "font-arabic" : ""}`}>{step.body[lang] || step.body.en}</p>
                 </li>
               </Reveal>
             ))}

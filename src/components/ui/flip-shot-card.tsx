@@ -71,7 +71,7 @@ function Face({
           </p>
           <p className={`mt-2 text-white/75 ${arabic ? "font-arabic text-sm" : "text-[12px] uppercase tracking-[0.16em]"}`}>{meta}</p>
           <p
-            className={`mt-3 inline-flex rounded-full bg-primary px-3 py-1 text-white ${
+            className={`mt-3 inline-flex rounded-full bg-primary px-3 py-1 text-on-primary ${
               arabic ? "font-arabic text-[13px]" : "text-[10px] uppercase tracking-[0.14em]"
             }`}
           >
@@ -80,7 +80,7 @@ function Face({
         </div>
       ) : (
         <p
-          className={`absolute bottom-4 ${arabic ? "right-4" : "left-4"} inline-flex rounded-full bg-primary px-3 py-1.5 text-white ${
+          className={`absolute bottom-4 ${arabic ? "right-4" : "left-4"} inline-flex rounded-full bg-primary px-3 py-1.5 text-on-primary ${
             arabic ? "font-arabic text-[13px]" : "text-[10px] uppercase tracking-[0.14em]"
           }`}
         >
@@ -120,7 +120,7 @@ export function FlipShotCard({
       onClick={() => setFlipped((open) => !open)}
       aria-pressed={flipped}
       aria-label={`${item.client_name}. ${flipped ? t.workAfter : t.workBefore}. ${t.workFlip}`}
-      className="relative block aspect-[4/5] w-full cursor-pointer rounded-[28px] bg-[#d4e6fb] p-2 text-start shadow-[0_16px_40px_-28px_rgba(36,67,178,0.35)] [perspective:1400px]"
+      className="relative block aspect-[4/5] w-full cursor-pointer rounded-[28px] bg-card p-2 text-start shadow-[0_16px_40px_-28px_rgba(15,30,46,0.55)] [perspective:1400px]"
     >
       <div
         className={cn(

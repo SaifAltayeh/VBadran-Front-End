@@ -26,7 +26,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#d4e7fb",
+  themeColor: "#0f1e2e",
 };
 
 const siteUrl =
@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-full bg-background font-sans text-black antialiased">
+      <body className="min-h-full bg-background font-sans text-title antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
