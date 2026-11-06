@@ -4,7 +4,7 @@ import { FaqPanel } from "@/components/sections/faq-panel";
 
 export const metadata: Metadata = {
   title: "FAQ",
-  description: "Answers about VBADRAN programs, nutrition, online coaching, and what happens after you join.",
+  description: "Answers about Badran training packages, workout plans, and exercise videos.",
   alternates: { canonical: "/faq" },
 };
 

@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
-import { Button, Field } from "@/components/ui/primitives";
-import { confirmPasswordReset, errorMessage, login, register, requestPasswordReset, setPreviewSession } from "@/lib/api";
+import { Button, Field, SelectField } from "@/components/ui/primitives";
+import { confirmPasswordReset, errorMessage, getGyms, login, register, requestPasswordReset } from "@/lib/api";
 import { useLang } from "@/lib/i18n";
+import { FITNESS_GOALS } from "@/lib/goals";
+import { pickLocale } from "@/lib/locale";
+import type { Gym } from "@/types";
 
 export function LoginForm() {
   const { t, arabic } = useLang();
@@ -23,7 +26,8 @@ export function LoginForm() {
     try {
       const user = await login(String(form.get("email") || "").trim(), String(form.get("password") || ""));
       if (user.is_staff) {
-        window.location.assign(`${process.env.NEXT_PUBLIC_PANEL_URL || "http://localhost:3011"}/login`);
+        const panelBase = (process.env.NEXT_PUBLIC_PANEL_URL || "http://localhost:3011").replace(/\/+$/, "");
+        window.location.href = new URL("/login", `${panelBase}/`).href;
         return;
       }
       router.push(params.get("next") || "/dashboard");
@@ -44,29 +48,21 @@ export function LoginForm() {
       <div className={`flex flex-wrap justify-between gap-3 text-sm ${arabic ? "font-arabic" : ""}`}>
         <Link href="/forgot-password" className="underline-offset-4 hover:underline">{t.forgot}</Link>
         <Link href="/register" className="underline-offset-4 hover:underline">{t.createAccount}</Link>
-        <a href={process.env.NEXT_PUBLIC_PANEL_URL || "http://localhost:3011"} className="underline-offset-4 hover:underline">
-          {t.admin.title}
-        </a>
       </div>
-      <button
-        type="button"
-        className={`text-start text-sm text-muted underline-offset-4 hover:underline ${arabic ? "font-arabic" : ""}`}
-        onClick={() => {
-          setPreviewSession();
-          router.push("/dashboard");
-        }}
-      >
-        {t.preview}
-      </button>
     </form>
   );
 }
 
 export function RegisterForm() {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
   const router = useRouter();
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [gyms, setGyms] = useState<Gym[]>([]);
+
+  useEffect(() => {
+    getGyms().then(setGyms).catch(() => setGyms([]));
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -85,6 +81,8 @@ export function RegisterForm() {
         email: String(form.get("email")),
         phone: String(form.get("phone") || ""),
         password,
+        goal: String(form.get("goal") || ""),
+        gym_id: Number(form.get("gym_id") || 0) || null,
       });
       await login(String(form.get("email")), password);
       router.push("/dashboard");
@@ -102,6 +100,22 @@ export function RegisterForm() {
       </div>
       <Field label={t.email} name="email" type="email" required />
       <Field label={t.phone} name="phone" />
+      <SelectField label={arabic ? "الصالة" : "Gym"} name="gym_id">
+        <option value="">{arabic ? "اختر الصالة" : "Choose a gym"}</option>
+        {gyms.map((item) => (
+          <option key={item.id} value={item.id}>
+            {pickLocale(item.name, item.name_ar, lang)}
+          </option>
+        ))}
+      </SelectField>
+      <SelectField label={t.dash.goal} name="goal">
+        <option value="">{arabic ? "اختر الهدف" : "Choose a goal"}</option>
+        {FITNESS_GOALS.map((goal) => (
+          <option key={goal.value} value={goal.value}>
+            {arabic ? goal.ar : goal.en}
+          </option>
+        ))}
+      </SelectField>
       <Field label={t.password} name="password" type="password" required minLength={8} />
       <Field label={t.confirmPassword} name="confirm" type="password" required minLength={8} />
       {error ? <p className="text-sm text-primary" role="alert">{error}</p> : null}

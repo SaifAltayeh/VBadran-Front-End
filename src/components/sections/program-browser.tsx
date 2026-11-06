@@ -4,11 +4,12 @@ import Link from "next/link";
 
 import { Media } from "@/components/ui/primitives";
 import { useLang } from "@/lib/i18n";
+import { formatDuration, pickLocale } from "@/lib/locale";
 import { formatPrice } from "@/lib/utils";
 import type { Program } from "@/types";
 
 export function ProgramBrowser({ programs }: { programs: Program[] }) {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
 
   if (!programs.length) {
     return <p className={`py-16 text-subtitle ${arabic ? "font-arabic" : ""}`}>{t.nothingCategory}</p>;
@@ -27,16 +28,18 @@ export function ProgramBrowser({ programs }: { programs: Program[] }) {
               className="transition-transform duration-700 group-hover:scale-[1.04]"
             />
           </div>
-          <p className={`mt-4 text-subtitle ${arabic ? "font-arabic text-[14px]" : "text-[11px] uppercase tracking-[0.16em]"}`}>
-            {program.duration_weeks} {t.weeks}
-          </p>
+          {formatDuration(program.duration_weeks, t.weeks) ? (
+            <p className={`mt-4 text-subtitle ${arabic ? "font-arabic text-[14px]" : "text-[11px] uppercase tracking-[0.16em]"}`}>
+              {formatDuration(program.duration_weeks, t.weeks)}
+            </p>
+          ) : null}
           <h2 className={`mt-2 ${arabic ? "font-arabic text-[26px] font-extrabold leading-[1.2]" : "font-display text-[28px] tracking-tight"}`}>
-            {program.title}
+            {pickLocale(program.title, program.title_ar, lang)}
           </h2>
           <p className={`mt-2 line-clamp-2 text-sm leading-6 text-subtitle ${arabic ? "font-arabic text-[15px] leading-7" : ""}`}>
-            {program.short_description}
+            {pickLocale(program.short_description, program.short_description_ar, lang)}
           </p>
-          <p className="mt-4 font-display text-xl">{formatPrice(program.price, program.currency)}</p>
+          <p className="mt-4 font-display text-xl">{formatPrice(program.price, program.currency, lang)}</p>
         </Link>
       ))}
     </div>

@@ -5,7 +5,7 @@ import { getPrograms } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Contact VBADRAN about personal training, online coaching, or a program that fits your week.",
+  description: "Contact Badran about training packages and workout plans.",
   alternates: { canonical: "/contact" },
 };
 

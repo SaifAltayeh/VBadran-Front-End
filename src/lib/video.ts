@@ -36,3 +36,13 @@ export function embedUrl(url: string) {
 export function isDirectVideo(url: string) {
   return url.startsWith("data:video") || /\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(url);
 }
+
+export function mediaUrl(url: string) {
+  if (!url) return "";
+  if (url.startsWith("http") || url.startsWith("data:") || url.startsWith("blob:")) return url;
+  if (url.startsWith("/media/")) {
+    const api = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001/api").replace(/\/api\/?$/, "");
+    return `${api}${url}`;
+  }
+  return url;
+}

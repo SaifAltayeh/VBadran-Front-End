@@ -1,22 +1,22 @@
-import { findPackage, findProgram, findTransformation, packages, programs, testimonials, transformations } from "@/data/catalog";
-import { exercises, findExercise, findWorkout, mockAccount, mockDashboard, mockMessages, mockNutrition, mockProgram, mockProgress, workouts } from "@/data/platform";
+import { testimonials, transformations } from "@/data/catalog";
 import { defaultSiteHome, mergeSiteHome, type SiteHome } from "@/lib/site-home";
 import type {
   Account,
   AuthUser,
   CheckoutResult,
   DashboardData,
-  MessageThread,
+  Exercise,
   MyPortalVideos,
   MyProgram,
-  NutritionPlan,
-  ProgressEntry,
-  ProgressPhoto,
+  Package,
+  Program,
+  Transformation,
+  Workout,
 } from "@/types";
 
-import { apiFetch, isNetworkError, isPreview, withFallback } from "./client";
+import { apiFetch } from "./client";
 
-export { errorMessage, isPreview } from "./client";
+export { errorMessage } from "./client";
 
 async function publicList<T>(path: string, fallback: T[]): Promise<T[]> {
   try {
@@ -34,27 +34,43 @@ export async function getSiteHome(): Promise<SiteHome> {
   }
 }
 
-export const getPrograms = () => publicList("/programs/", programs);
-export const getPackages = () => publicList("/packages/", packages);
+export async function getPrograms(): Promise<Program[]> {
+  try {
+    return await apiFetch<Program[]>("/programs/");
+  } catch {
+    return [];
+  }
+}
+
+export const getPackages = () => apiFetch<Package[]>("/packages/");
+export const getGyms = () => publicList("/gyms/", []);
 export const getTestimonials = () => publicList("/testimonials/", testimonials);
 export const getTransformations = () => publicList("/transformations/", transformations);
 
+export async function getPackage(slug: string) {
+  try {
+    return await apiFetch<Package>("/packages/" + slug);
+  } catch (error) {
+    if (error instanceof Error && "status" in error && (error as { status: number }).status === 404) return null;
+    return null;
+  }
+}
+
 export async function getProgram(slug: string) {
   try {
-    return await apiFetch<Awaited<ReturnType<typeof findProgram>>>("/programs/" + slug);
+    return await apiFetch<Program>("/programs/" + slug);
   } catch (error) {
-    if (isNetworkError(error)) return findProgram(slug);
     if (error instanceof Error && "status" in error && (error as { status: number }).status === 404) return null;
-    return findProgram(slug);
+    return null;
   }
 }
 
 export async function getTransformation(slug: string) {
   try {
-    return await apiFetch<NonNullable<ReturnType<typeof findTransformation>>>("/transformations/" + slug);
+    return await apiFetch<Transformation>("/transformations/" + slug);
   } catch (error) {
-    if (isNetworkError(error)) return findTransformation(slug);
-    return findTransformation(slug);
+    if (error instanceof Error && "status" in error && (error as { status: number }).status === 404) return null;
+    throw error;
   }
 }
 
@@ -76,13 +92,6 @@ export function setSession(tokens: { access: string; refresh: string; user?: Aut
   localStorage.removeItem("vb_preview");
   if (tokens.user?.is_staff) localStorage.setItem("vb_staff", "1");
   else localStorage.removeItem("vb_staff");
-  document.cookie = "vb_session=1; path=/; max-age=604800; samesite=lax";
-}
-
-export function setPreviewSession() {
-  localStorage.removeItem("vb_access");
-  localStorage.removeItem("vb_refresh");
-  localStorage.setItem("vb_preview", "1");
   document.cookie = "vb_session=1; path=/; max-age=604800; samesite=lax";
 }
 
@@ -109,6 +118,8 @@ export async function register(payload: {
   first_name: string;
   last_name: string;
   phone: string;
+  goal?: string;
+  gym_id?: number | null;
 }) {
   return apiFetch("/auth/register/", { method: "POST", body: JSON.stringify(payload) });
 }
@@ -127,72 +138,48 @@ export async function confirmPasswordReset(payload: { uid: string; token: string
   });
 }
 
-export const getDashboard = () => withFallback<DashboardData>("/dashboard/", mockDashboard);
-export const getMyProgram = () => withFallback<MyProgram>("/my-program/", mockProgram);
-export const getMyVideos = () =>
-  withFallback<MyPortalVideos>("/my-videos/", () => ({ program: null, videos: [] }));
-export const getNutrition = () => withFallback<{ plan: NutritionPlan | null }>("/nutrition/", mockNutrition);
-export const getExercises = () => withFallback("/exercises/", () => exercises);
-export const getWorkouts = () => withFallback("/workouts/", () => workouts);
+export const getDashboard = () => apiFetch<DashboardData>("/dashboard/");
+export const getMyProgram = () => apiFetch<MyProgram>("/my-program/");
+export const getMyVideos = () => apiFetch<MyPortalVideos>("/my-videos/");
+export const getExercises = () => apiFetch<Exercise[]>("/exercises/");
+export const getWorkouts = () => apiFetch<Workout[]>("/workouts/");
 
 export async function getWorkout(id: number) {
-  if (isPreview()) return findWorkout(id);
   try {
-    return await apiFetch<NonNullable<ReturnType<typeof findWorkout>>>("/workouts/" + id);
+    return await apiFetch<Workout>("/workouts/" + id);
   } catch (error) {
-    if (isNetworkError(error)) return findWorkout(id);
+    if (error instanceof Error && "status" in error && (error as { status: number }).status === 404) return null;
     throw error;
   }
 }
 
 export async function getExercise(slug: string) {
-  if (isPreview()) return findExercise(slug);
   try {
-    return await apiFetch<NonNullable<ReturnType<typeof findExercise>>>("/exercises/" + slug);
+    return await apiFetch<Exercise>("/exercises/" + slug);
   } catch (error) {
-    if (isNetworkError(error)) return findExercise(slug);
+    if (error instanceof Error && "status" in error && (error as { status: number }).status === 404) return null;
     throw error;
   }
 }
 
 export async function completeWorkout(scheduleId: number) {
-  if (isPreview()) return { status: "completed" as const };
   return apiFetch<{ status: string }>("/workouts/complete/", {
     method: "POST",
     body: JSON.stringify({ schedule_id: scheduleId }),
   });
 }
 
-export const getProgress = () => withFallback<ProgressEntry[]>("/progress/", mockProgress);
-export const getMessages = () => withFallback<MessageThread>("/messages/", mockMessages);
-export const getAccount = () => withFallback<Account>("/account/", mockAccount);
-
-export async function sendMessage(body: string) {
-  if (isPreview()) {
-    return { id: Date.now(), body, is_coach: false, created_at: new Date().toISOString() };
-  }
-  return apiFetch<MessageThread["messages"][number]>("/messages/", {
-    method: "POST",
-    body: JSON.stringify({ body }),
-  });
-}
+export const getAccount = () => apiFetch<Account>("/account/");
 
 export async function updateAccount(payload: Partial<Account>) {
-  if (isPreview()) return { ...mockAccount(), ...payload };
   return apiFetch<Account>("/account/", { method: "PATCH", body: JSON.stringify(payload) });
 }
 
 export async function changePassword(current_password: string, new_password: string) {
-  if (isPreview()) return { detail: "Password updated in preview only." };
   return apiFetch<{ detail: string }>("/account/password/", {
     method: "POST",
     body: JSON.stringify({ current_password, new_password }),
   });
-}
-
-export async function addProgress(payload: Partial<ProgressEntry>) {
-  if (isPreview()) return { id: Date.now(), notes: "", date: payload.date || "", ...payload } as ProgressEntry;
-  return apiFetch<ProgressEntry>("/progress/", { method: "POST", body: JSON.stringify(payload) });
 }
 
 export async function checkout(payload: {
@@ -203,39 +190,11 @@ export async function checkout(payload: {
   slug: string;
   kind: "program" | "package";
   terms_accepted: boolean;
+  goal?: string;
+  gym_id?: number;
 }) {
-  const product = payload.kind === "package" ? findPackage(payload.slug) : findProgram(payload.slug);
-  try {
-    return await apiFetch<CheckoutResult>("/payments/checkout/", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
-  } catch (error) {
-    if (!isNetworkError(error) || !product) throw error;
-    return {
-      order_number: "VB-PREVIEW",
-      title: "name" in product ? product.name : product.title,
-      email: payload.email,
-      full_name: payload.full_name,
-      amount: product.price,
-      currency: product.currency,
-      status: "pending",
-      payment: {
-        provider: "unconfigured",
-        status: "pending",
-        detail: "No card was charged. Connect a payment provider to capture payment and open access.",
-      },
-    } satisfies CheckoutResult;
-  }
-}
-
-export async function uploadProgressPhoto(file: File, caption: string) {
-  if (isPreview()) {
-    return { id: Date.now(), url: URL.createObjectURL(file), caption, date: new Date().toISOString().slice(0, 10) } satisfies ProgressPhoto;
-  }
-  const body = new FormData();
-  body.set("image", file);
-  body.set("caption", caption);
-  body.set("date", new Date().toISOString().slice(0, 10));
-  return apiFetch<ProgressPhoto>("/progress-photos/", { method: "POST", body });
+  return apiFetch<CheckoutResult>("/payments/checkout/", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }

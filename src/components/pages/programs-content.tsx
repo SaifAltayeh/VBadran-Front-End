@@ -1,12 +1,12 @@
 "use client";
 
-import { ProgramBrowser } from "@/components/sections/program-browser";
+import { PlanCards } from "@/components/sections/plan-cards";
 import { Button, Container, Reveal } from "@/components/ui/primitives";
 import { useLang } from "@/lib/i18n";
 import { useSiteHome } from "@/lib/site-home-context";
-import type { Program } from "@/types";
+import type { Package } from "@/types";
 
-export function ProgramsContent({ programs }: { programs: Program[] }) {
+export function ProgramsContent({ packages, unavailable = false }: { packages: Package[]; unavailable?: boolean }) {
   const { t, lang, arabic } = useLang();
   const copy = t.programsPage;
   const page = useSiteHome().pages.programs;
@@ -35,7 +35,13 @@ export function ProgramsContent({ programs }: { programs: Program[] }) {
 
       <section className="pb-16 md:pb-24">
         <Container>
-          <ProgramBrowser programs={programs} />
+          {unavailable ? (
+            <p className={`max-w-md text-base leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`} role="alert">
+              {copy.unavailable}
+            </p>
+          ) : (
+            <PlanCards packages={packages} heading="" />
+          )}
         </Container>
       </section>
 

@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import { PlanCards } from "@/components/sections/plan-cards";
 import { ProcessStack } from "@/components/sections/process-stack";
-import { ProgramSwipe } from "@/components/sections/program-swipe";
 import { WhyScroll } from "@/components/sections/why-scroll";
 import { FaqPanel } from "@/components/sections/faq-panel";
 import { FlipShotCard } from "@/components/ui/flip-shot-card";
@@ -14,7 +13,51 @@ import { aboutHome } from "@/lib/constants/site";
 import { useLang } from "@/lib/i18n";
 import { useSiteHome } from "@/lib/site-home-context";
 import { ease } from "@/lib/utils";
-import type { Package, Program, Testimonial, Transformation } from "@/types";
+import { embedUrl, isDirectVideo } from "@/lib/video";
+import type { SiteHome } from "@/lib/site-home";
+import type { Package, Testimonial, Transformation } from "@/types";
+
+function HeroMedia({ hero, lang }: { hero: SiteHome["hero"]; lang: "en" | "ar" }) {
+  const src = hero.videoUrl || hero.video;
+  const poster = hero.poster || hero.image;
+  const embed = src ? embedUrl(src) : null;
+  if (embed) {
+    return (
+      <iframe
+        src={`${embed}${embed.includes("?") ? "&" : "?"}rel=0`}
+        title={hero.alt[lang] || "Introduction"}
+        className="absolute inset-0 h-full w-full"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    );
+  }
+  if (src && isDirectVideo(src)) {
+    return (
+      <video
+        src={src}
+        poster={poster || undefined}
+        controls
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    );
+  }
+  if (src) {
+    return (
+      <video
+        src={src}
+        poster={poster || undefined}
+        controls
+        playsInline
+        preload="metadata"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+    );
+  }
+  return <Media src={hero.image} alt={hero.alt[lang]} priority sizes="100vw" position="70% 12%" />;
+}
 
 export function Hero() {
   const reduce = Boolean(useReducedMotion());
@@ -29,7 +72,7 @@ export function Hero() {
           animate={{ scale: 1 }}
           transition={{ duration: 1.6, ease }}
         >
-          <Media src={hero.image} alt={hero.alt[lang]} priority sizes="100vw" position="70% 12%" />
+          <HeroMedia hero={hero} lang={lang} />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20" />
         <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 lg:p-16">
@@ -144,8 +187,27 @@ export function AboutUs() {
   );
 }
 
-export function ProgramBand({ programs }: { programs: Program[] }) {
-  return <ProgramSwipe programs={programs} />;
+export function ProgramBand({ packages, unavailable = false }: { packages: Package[]; unavailable?: boolean }) {
+  const { t, lang, arabic } = useLang();
+  const site = useSiteHome();
+  return (
+    <section id="programs" className="scroll-mt-24 bg-background pb-8 pt-16 md:pb-10 md:pt-24">
+      <Container>
+        {unavailable ? (
+          <p className={`max-w-md text-base leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`} role="alert">
+            {t.programsPage.unavailable}
+          </p>
+        ) : (
+          <PlanCards
+            packages={packages}
+            heading={site.sections.programs.heading[lang] || t.programsHeading}
+            linkHref="/programs"
+            linkLabel={site.sections.programs.link[lang] || t.viewPrograms}
+          />
+        )}
+      </Container>
+    </section>
+  );
 }
 
 export function Process() {
@@ -185,7 +247,7 @@ export function TransformationBand({ items }: { items: Transformation[] }) {
 
       <div className="grid grid-cols-1 gap-3 px-5 sm:gap-1 md:grid-cols-3 md:px-10">
         {shown.map((item) => (
-          <FlipShotCard key={item.slug} item={item} arabic={arabic} t={t} />
+          <FlipShotCard key={item.slug} item={item} arabic={arabic} t={t} showCaption={false} />
         ))}
       </div>
     </section>
@@ -217,16 +279,6 @@ export function Testimonials({ items }: { items: Testimonial[] }) {
             </Reveal>
           ))}
         </div>
-      </Container>
-    </section>
-  );
-}
-
-export function PricingBand({ packages }: { packages: Package[] }) {
-  return (
-    <section id="pricing" className="scroll-mt-24 bg-background pb-8 pt-16 md:pb-10 md:pt-24">
-      <Container>
-        <PlanCards packages={packages} />
       </Container>
     </section>
   );

@@ -1,21 +1,11 @@
 "use client";
 
-import {
-  CalendarDays,
-  ChartNoAxesColumn,
-  Clapperboard,
-  Dumbbell,
-  House,
-  Library,
-  LogOut,
-  Menu,
-  UserRound,
-  X,
-} from "lucide-react";
+import { Dumbbell, House, Library, LogOut, Menu, UserRound, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { BrandMark } from "@/components/layout/brand-mark";
 import { LanguageToggle, useLang } from "@/lib/i18n";
 import { clearSession } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -23,10 +13,7 @@ import { cn } from "@/lib/utils";
 const hrefs = [
   { href: "/dashboard", key: "overview", icon: House },
   { href: "/dashboard/program", key: "program", icon: Dumbbell },
-  { href: "/dashboard/training", key: "training", icon: CalendarDays },
   { href: "/dashboard/exercises", key: "exercises", icon: Library },
-  { href: "/dashboard/videos", key: "videos", icon: Clapperboard },
-  { href: "/dashboard/progress", key: "progress", icon: ChartNoAxesColumn },
   { href: "/dashboard/account", key: "account", icon: UserRound },
 ] as const;
 
@@ -49,9 +36,9 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   }
 
   const nav = (
-    <nav className="flex h-full flex-col" aria-label="Dashboard">
-      <Link href="/" className="px-2 font-display text-lg font-bold tracking-tight">
-        VBADRAN
+    <nav className="flex h-full flex-col" aria-label={arabic ? "لوحة العميل" : "Dashboard"}>
+      <Link href="/" className="px-2">
+        <BrandMark />
       </Link>
       <p className={`mt-1 px-2 text-subtitle ${arabic ? "font-arabic text-sm" : "text-[11px] uppercase tracking-[0.16em]"}`}>
         {t.dash.platform}
@@ -96,8 +83,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen flex-col">
         <header className="flex h-16 items-center justify-between px-5 lg:h-20 lg:px-8">
           <div className="min-w-0">
-            <Link href="/" className="font-display font-bold tracking-tight lg:hidden">
-              VBADRAN
+            <Link href="/" className="lg:hidden">
+              <BrandMark />
             </Link>
             <p className={`hidden truncate lg:block ${arabic ? "font-arabic text-xl font-semibold" : "font-display text-2xl tracking-tight"}`}>
               {current.label}
@@ -122,8 +109,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         ) : null}
         <div className="flex-1 px-4 pb-28 lg:px-8 lg:pb-10">{children}</div>
       </div>
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-card/95 px-1 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden" aria-label="Mobile">
-        {links.filter((item) => ["overview", "training", "progress", "program"].includes(item.key)).map((item) => {
+      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-line bg-card/95 px-1 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden" aria-label={arabic ? "التنقل" : "Mobile"}>
+        {links.filter((item) => ["overview", "program", "exercises", "account"].includes(item.key)).map((item) => {
           const Icon = item.icon;
           const on = active(pathname, item.href);
           return (

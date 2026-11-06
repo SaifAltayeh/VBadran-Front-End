@@ -1,5 +1,5 @@
-import { ProgressView } from "@/components/dashboard/views";
+import { notFound } from "next/navigation";
 
 export default function Page() {
-  return <ProgressView />;
+  notFound();
 }

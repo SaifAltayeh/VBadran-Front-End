@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FlipShotCard } from "@/components/ui/flip-shot-card";
 import { Button, Container, Reveal } from "@/components/ui/primitives";
 import { useLang } from "@/lib/i18n";
+import { pickLocale } from "@/lib/locale";
 import { useSiteHome } from "@/lib/site-home-context";
 import type { Transformation } from "@/types";
 
@@ -51,14 +52,11 @@ export function ResultsContent({ items }: { items: Transformation[] }) {
                   priority={index < 3}
                   sizes="(min-width: 768px) 30vw, 100vw"
                 />
-                <p className={`mt-4 text-subtitle ${arabic ? "font-arabic text-[14px]" : "text-[11px] uppercase tracking-[0.16em]"}`}>
-                  {item.duration_weeks} {t.weeks} · {item.program_name}
-                </p>
-                <h2 className={`mt-2 ${arabic ? "font-arabic text-[26px] font-extrabold leading-[1.2]" : "font-display text-[28px] tracking-tight"}`}>
-                  {item.client_name}
+                <h2 className={`mt-4 ${arabic ? "font-arabic text-[26px] font-extrabold leading-[1.2]" : "font-display text-[28px] tracking-tight"}`}>
+                  {pickLocale(item.client_name, item.client_name_ar, lang)}
                 </h2>
                 <p className={`mt-2 line-clamp-2 text-sm leading-6 text-subtitle ${arabic ? "font-arabic text-[15px] leading-7" : ""}`}>
-                  {item.result_summary}
+                  {pickLocale(item.result_summary, item.result_summary_ar, lang)}
                 </p>
                 <Link
                   href={`/transformations/${item.slug}`}

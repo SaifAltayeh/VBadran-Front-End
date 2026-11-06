@@ -4,7 +4,7 @@ import { AboutContent } from "@/components/pages/about-content";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Meet the coach behind VBADRAN. Personal training and online coaching built around the person in front of the plan.",
+  description: "Meet Badran. Training packages, personal workout plans, and instructional exercise videos.",
   alternates: { canonical: "/about" },
 };
 

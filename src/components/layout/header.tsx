@@ -4,23 +4,39 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 
+import { BrandMark } from "@/components/layout/brand-mark";
 import { Button } from "@/components/ui/primitives";
 import { LanguageToggle, useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 import { cn, ease } from "@/lib/utils";
+
+function useIsClient() {
+  return useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
+}
 
 export function Header() {
   const pathname = usePathname();
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
+  const brand = useSiteHome().site.brandName;
+  const brandName = brand?.[lang] || brand?.en || "Badran";
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPath, setMenuPath] = useState(pathname);
+  const open = menuOpen && menuPath === pathname;
+  const mounted = useIsClient();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  function setOpen(next: boolean | ((current: boolean) => boolean)) {
+    const value = typeof next === "function" ? next(open) : next;
+    setMenuOpen(value);
+    if (value) setMenuPath(pathname);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -30,14 +46,10 @@ export function Header() {
   }, []);
 
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
     if (!open) return;
     const y = window.scrollY;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") setMenuOpen(false);
     };
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
@@ -110,8 +122,8 @@ export function Header() {
         )}
       >
         <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between gap-2 px-4 md:h-full md:gap-3 md:px-10">
-          <Link href="/" className="min-w-0 truncate font-display text-base font-bold tracking-[-0.04em] sm:text-lg" aria-label="VBADRAN home">
-            VBADRAN
+          <Link href="/" className="min-w-0 truncate" aria-label={`${brandName} home`}>
+            <BrandMark />
           </Link>
           <nav className="hidden items-center gap-6 xl:flex" aria-label="Primary">
             {t.nav.map((item) => {

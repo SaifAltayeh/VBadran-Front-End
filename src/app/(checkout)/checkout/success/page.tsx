@@ -13,7 +13,7 @@ function readOrder() {
 }
 
 export default function SuccessPage() {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
   const order = useSyncExternalStore(
     () => () => undefined,
     readOrder,
@@ -54,7 +54,7 @@ export default function SuccessPage() {
           </div>
           <div>
             <dt className={`text-muted ${arabic ? "font-arabic text-sm" : "text-[11px] uppercase tracking-[0.16em]"}`}>{t.orderAmount}</dt>
-            <dd className="mt-1">{formatPrice(order.amount, order.currency)}</dd>
+            <dd className="mt-1">{formatPrice(order.amount, order.currency, lang)}</dd>
           </div>
         </dl>
       ) : null}

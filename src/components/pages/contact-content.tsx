@@ -2,7 +2,6 @@
 
 import { ContactForm } from "@/components/forms/contact-form";
 import { Container } from "@/components/ui/primitives";
-import { site as fallbackSite, socials as fallbackSocials } from "@/lib/constants/site";
 import { useLang } from "@/lib/i18n";
 import { useSiteHome } from "@/lib/site-home-context";
 import type { Program } from "@/types";
@@ -13,10 +12,10 @@ export function ContactContent({ programs }: { programs: Program[] }) {
   const cms = useSiteHome();
   const copy = cms.pages.contact;
   const info = cms.site;
-  const email = info.email || fallbackSite.email;
-  const phone = info.phoneDisplay || fallbackSite.phoneDisplay;
-  const phoneHref = info.phoneHref || fallbackSite.phoneHref;
-  const links = info.socials?.length ? info.socials : fallbackSocials;
+  const email = info.email || "";
+  const phone = info.phoneDisplay || "";
+  const phoneHref = info.phoneHref || (phone ? `tel:${phone.replace(/\s+/g, "")}` : "");
+  const links = (info.socials || []).filter((item) => item.href);
 
   return (
     <section className="pb-20 pt-8 md:pb-24 md:pt-12">
@@ -35,34 +34,42 @@ export function ContactContent({ programs }: { programs: Program[] }) {
         </h1>
         <p className={`mt-5 max-w-md text-base leading-7 text-subtitle ${arabic ? "font-arabic" : ""}`}>{copy.lead[lang] || fallback.lead}</p>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          <a href={`mailto:${email}`} className="rounded-[24px] border border-line bg-card p-5 transition-colors hover:border-primary">
-            <p className={arabic ? "font-arabic text-[14px] text-subtitle" : "text-[12px] uppercase tracking-[0.16em] text-subtitle"}>
-              {copy.emailLabel[lang] || fallback.email}
-            </p>
-            <p className="mt-3 break-all font-display text-xl tracking-tight md:text-2xl">{email}</p>
-          </a>
-          <a href={phoneHref} className="rounded-[24px] border border-line bg-card p-5 transition-colors hover:border-primary">
-            <p className={arabic ? "font-arabic text-[14px] text-subtitle" : "text-[12px] uppercase tracking-[0.16em] text-subtitle"}>
-              {copy.phoneLabel[lang] || fallback.phone}
-            </p>
-            <p className="mt-3 font-display text-xl tracking-tight md:text-2xl" dir="ltr">
-              {phone}
-            </p>
-          </a>
-          <div className="rounded-[24px] border border-line bg-card p-5 sm:col-span-2 xl:col-span-1">
-            <p className={arabic ? "font-arabic text-[14px] text-subtitle" : "text-[12px] uppercase tracking-[0.16em] text-subtitle"}>
-              {t.social}
-            </p>
-            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
-              {links.map((item) => (
-                <a key={item.label} href={item.href} target="_blank" rel="noreferrer" className="text-lg tracking-tight hover:text-primary">
-                  {item.label}
-                </a>
-              ))}
-            </div>
+        {email || phone || links.length ? (
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {email ? (
+              <a href={`mailto:${email}`} className="rounded-[24px] border border-line bg-card p-5 transition-colors hover:border-primary">
+                <p className={arabic ? "font-arabic text-[14px] text-subtitle" : "text-[12px] uppercase tracking-[0.16em] text-subtitle"}>
+                  {copy.emailLabel[lang] || fallback.email}
+                </p>
+                <p className="mt-3 break-all font-display text-xl tracking-tight md:text-2xl">{email}</p>
+              </a>
+            ) : null}
+            {phone ? (
+              <a href={phoneHref || undefined} className="rounded-[24px] border border-line bg-card p-5 transition-colors hover:border-primary">
+                <p className={arabic ? "font-arabic text-[14px] text-subtitle" : "text-[12px] uppercase tracking-[0.16em] text-subtitle"}>
+                  {copy.phoneLabel[lang] || fallback.phone}
+                </p>
+                <p className="mt-3 font-display text-xl tracking-tight md:text-2xl" dir="ltr">
+                  {phone}
+                </p>
+              </a>
+            ) : null}
+            {links.length ? (
+              <div className="rounded-[24px] border border-line bg-card p-5 sm:col-span-2 xl:col-span-1">
+                <p className={arabic ? "font-arabic text-[14px] text-subtitle" : "text-[12px] uppercase tracking-[0.16em] text-subtitle"}>
+                  {t.social}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+                  {links.map((item) => (
+                    <a key={item.label || item.href} href={item.href} target="_blank" rel="noreferrer" className="text-lg tracking-tight hover:text-primary">
+                      {item.label || item.href}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
-        </div>
+        ) : null}
 
         <div className="mt-6 rounded-[24px] border border-line bg-card p-5 md:mt-8 md:p-8">
           <ContactForm programs={programs} />

@@ -4,16 +4,22 @@ import { FormEvent, useState } from "react";
 
 import { Button, Field, SelectField, TextArea } from "@/components/ui/primitives";
 import { errorMessage, submitInquiry } from "@/lib/api";
-import { programs as fallbackPrograms } from "@/data/catalog";
 import { useLang } from "@/lib/i18n";
+import { pickLocale } from "@/lib/locale";
 import { useSiteHome } from "@/lib/site-home-context";
 import type { Program } from "@/types";
+
+const PACKAGE_OPTIONS = [
+  { slug: "spark", title: "Spark", title_ar: "سبارك" },
+  { slug: "platinum", title: "Platinum", title_ar: "بلاتينوم" },
+  { slug: "oxygen", title: "Oxygen", title_ar: "أوكسجين" },
+];
 
 export function ContactForm({ programs }: { programs?: Program[] }) {
   const { t, lang, arabic } = useLang();
   const copy = t.contactPage;
   const page = useSiteHome().pages.contact;
-  const options = programs?.length ? programs : fallbackPrograms;
+  const options = programs?.length ? programs : PACKAGE_OPTIONS;
   const [status, setStatus] = useState<"idle" | "loading" | "sent" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -66,10 +72,10 @@ export function ContactForm({ programs }: { programs?: Program[] }) {
         </SelectField>
       </div>
       <Field label={copy.goal} name="goal" required placeholder={copy.goalPh} labelClassName={labelClass} />
-      <SelectField label={copy.preferred} name="program" defaultValue="Online Coaching" labelClassName={labelClass}>
+      <SelectField label={copy.preferred} name="program" labelClassName={labelClass}>
         {options.map((program) => (
           <option key={program.slug} value={program.title}>
-            {program.title}
+            {pickLocale(program.title, program.title_ar, lang)}
           </option>
         ))}
       </SelectField>

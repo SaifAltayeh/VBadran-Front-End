@@ -5,7 +5,7 @@ import { getTransformations } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "Transformations",
-  description: "Client results from VBADRAN online coaching and transformation programs.",
+  description: "Client results from Badran training packages.",
   alternates: { canonical: "/transformations" },
 };
 

@@ -47,7 +47,7 @@ export function Button({
   const content = (
     <>
       {children}
-      {arrow ? <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" /> : null}
+      {arrow ? <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 rtl:group-hover:translate-x-0" /> : null}
     </>
   );
   if (href) {

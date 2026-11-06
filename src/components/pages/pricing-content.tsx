@@ -6,6 +6,7 @@ import { Button, Container, Reveal } from "@/components/ui/primitives";
 import { packageFeatureLabels } from "@/lib/constants/site";
 import { useLang } from "@/lib/i18n";
 import { useSiteHome } from "@/lib/site-home-context";
+import { formatDuration, pickLocale } from "@/lib/locale";
 import { formatPrice } from "@/lib/utils";
 import type { Package } from "@/types";
 
@@ -41,7 +42,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
 
       <section className="pb-16 md:pb-24">
         <Container>
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-3">
             {packages.map((item) => {
               const included = packageFeatureLabels.filter((row) => item.features[row.key]);
               const on = item.slug === selected;
@@ -71,20 +72,30 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                           : "text-[11px] uppercase tracking-[0.16em] text-subtitle"
                     }
                   >
-                    {item.is_highlighted ? copy.chosen[lang] || fallback.chosen : item.support_label}
+                    {item.is_highlighted
+                      ? copy.chosen[lang] || fallback.chosen
+                      : pickLocale(item.support_label, item.support_label_ar, lang)}
                   </p>
                   <h2 className={`mt-3 ${arabic ? "font-arabic text-[28px] font-extrabold" : "font-display text-[30px] tracking-tight"}`}>
-                    {item.name}
+                    {pickLocale(item.name, item.name_ar, lang)}
                   </h2>
                   <p className={`mt-3 text-sm leading-6 text-subtitle xl:min-h-[72px] ${arabic ? "font-arabic text-[15px] leading-7" : ""}`}>
-                    {item.tagline}
+                    {pickLocale(item.tagline, item.tagline_ar, lang)}
                   </p>
+                  {item.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.image} alt={item.image_alt || item.name} className="mt-4 h-auto w-full rounded-[16px] object-contain" />
+                  ) : null}
+                  {Number(item.price) > 0 ? (
                   <p className="mt-6 font-display text-[40px] leading-none tracking-[-0.04em]">
-                    {formatPrice(item.price, item.currency)}
+                    {formatPrice(item.price, item.currency, lang)}
                   </p>
+                  ) : null}
+                  {item.duration_weeks ? (
                   <p className={`mt-2 text-subtitle ${arabic ? "font-arabic text-[14px]" : "text-[11px] uppercase tracking-[0.16em]"}`}>
                     {item.duration_weeks} {t.weeks}
                   </p>
+                  ) : null}
                   <ul className="mt-6 flex-1 space-y-2.5">
                     {included.map((row) => (
                       <li key={row.key} className={`text-sm text-subtitle ${arabic ? "font-arabic text-[15px]" : ""}`}>
@@ -98,7 +109,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                       variant={on ? "primary" : "outline"}
                       className={`w-full ${arabic ? "font-arabic" : ""}`}
                     >
-                      {copy.start[lang] || fallback.start} {item.name}
+                      {copy.start[lang] || fallback.start} {pickLocale(item.name, item.name_ar, lang)}
                     </Button>
                   </div>
                 </article>
@@ -130,11 +141,11 @@ export function PricingContent({ packages }: { packages: Package[] }) {
               .map((item) => (
                 <div key={item.slug} className="border-t border-line">
                   <p className={`py-4 ${arabic ? "font-arabic text-xl font-semibold text-primary" : "font-display text-2xl tracking-tight text-primary"}`}>
-                    {item.name}
+                    {pickLocale(item.name, item.name_ar, lang)}
                   </p>
                   <div className="flex justify-between border-b border-line py-3 text-sm">
                     <span className="text-subtitle">{copy.duration[lang] || fallback.duration}</span>
-                    <span>{`${item.duration_weeks} ${t.weeks}`}</span>
+                    <span>{formatDuration(item.duration_weeks, t.weeks) || "—"}</span>
                   </div>
                   {packageFeatureLabels.map((row) => (
                     <div key={row.key} className="flex justify-between gap-4 border-b border-line py-3 text-sm">
@@ -160,7 +171,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                         item.slug === selected ? "text-primary" : ""
                       }`}
                     >
-                      {item.name}
+                      {pickLocale(item.name, item.name_ar, lang)}
                     </th>
                   ))}
                 </tr>
@@ -172,7 +183,7 @@ export function PricingContent({ packages }: { packages: Package[] }) {
                   </th>
                   {packages.map((item) => (
                     <td key={item.slug} className={`py-4 text-center text-sm ${arabic ? "font-arabic" : ""}`}>
-                      {`${item.duration_weeks} ${t.weeks}`}
+                      {formatDuration(item.duration_weeks, t.weeks) || "—"}
                     </td>
                   ))}
                 </tr>

@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = await getTransformation(slug);
   if (!item) return { title: "Result" };
   return {
-    title: `${item.client_name} · ${item.duration_weeks} weeks`,
+    title: item.duration_weeks ? `${item.client_name} · ${item.duration_weeks} weeks` : item.client_name,
     description: item.result_summary,
     alternates: { canonical: `/transformations/${slug}` },
   };

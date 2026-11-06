@@ -1,5 +1,5 @@
-import { VideosView } from "@/components/dashboard/views";
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <VideosView />;
+  redirect("/dashboard/exercises");
 }

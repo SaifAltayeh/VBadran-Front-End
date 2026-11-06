@@ -13,7 +13,31 @@ export const portalAr: Record<string, string> = {
   Rest: "راحة",
   Upcoming: "قادم",
   paid: "مدفوع",
+  Paid: "مدفوع",
   pending: "قيد الانتظار",
+  Pending: "قيد الانتظار",
+  active: "نشط",
+  Active: "نشط",
+  cancelled: "ملغى",
+  canceled: "ملغى",
+  Cancelled: "ملغى",
+  expired: "منتهٍ",
+  Expired: "منتهٍ",
+  failed: "فشل",
+  Failed: "فشل",
+  strength: "قوة",
+  Strength: "قوة",
+  muscle: "بناء عضل",
+  Muscle: "بناء عضل",
+  general: "لياقة عامة",
+  "fat-loss": "خسارة دهون",
+  "fat loss": "خسارة دهون",
+  "Fat loss": "خسارة دهون",
+  "general fitness": "لياقة عامة",
+  "General fitness": "لياقة عامة",
+  "Push Pull Leg": "دفع سحب رجل",
+  "Push / pull / leg": "دفع / سحب / رجل",
+  "Open video": "فتح الفيديو",
   All: "الكل",
   Quads: "الرباعية",
   Hamstrings: "الخلفية",
@@ -137,5 +161,6 @@ export function loc(arabic: boolean, value?: string | number | null) {
   if (value === null || value === undefined || value === "") return "";
   const text = String(value).trim();
   if (!arabic) return text;
-  return portalAr[text] ?? portalAr[text.toLowerCase()] ?? text;
+  const spaced = text.replace(/[_-]+/g, " ");
+  return portalAr[text] ?? portalAr[text.toLowerCase()] ?? portalAr[spaced] ?? portalAr[spaced.toLowerCase()] ?? text;
 }

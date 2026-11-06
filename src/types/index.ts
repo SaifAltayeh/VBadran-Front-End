@@ -1,30 +1,40 @@
-export type ProgramFeature = { id: number; text: string };
-export type ProgramFaq = { id: number; question: string; answer: string };
+export type ProgramFeature = { id: number; text: string; text_ar?: string };
+export type ProgramFaq = { id: number; question: string; question_ar?: string; answer: string; answer_ar?: string };
+export type Gym = { id: number; name: string; name_ar: string; slug: string; is_active?: boolean };
 
 export type Program = {
   id: number;
   title: string;
+  title_ar?: string;
   slug: string;
   short_description: string;
+  short_description_ar?: string;
   description: string;
+  description_ar?: string;
   price: string;
   currency: string;
-  duration_weeks: number;
+  duration_weeks: number | null;
   difficulty: string;
   difficulty_label: string;
   category: string;
   category_label: string;
   goal: string;
+  goal_ar?: string;
   featured_image: string;
   image_alt: string;
   is_featured: boolean;
   includes_nutrition: boolean;
   includes_training: boolean;
   expected_outcome: string;
+  expected_outcome_ar?: string;
   who_for: string;
+  who_for_ar?: string;
   training_structure: string;
+  training_structure_ar?: string;
   nutrition_overview: string;
+  nutrition_overview_ar?: string;
   support_overview: string;
+  support_overview_ar?: string;
   features: ProgramFeature[];
   faqs: ProgramFaq[];
 };
@@ -43,16 +53,24 @@ export type PackageFeatures = {
 export type Package = {
   id: number;
   name: string;
+  name_ar?: string;
   slug: string;
   tagline: string;
+  tagline_ar?: string;
   description: string;
-  duration_weeks: number;
+  description_ar?: string;
+  duration_weeks: number | null;
   price: string;
   currency: string;
   expected_outcome: string;
+  expected_outcome_ar?: string;
   is_highlighted: boolean;
   program_slug: string | null;
   support_label: string;
+  support_label_ar?: string;
+  image?: string;
+  image_alt?: string;
+  gym?: Gym | null;
   features: PackageFeatures;
 };
 
@@ -69,23 +87,29 @@ export type Testimonial = {
 export type Transformation = {
   id: number;
   client_name: string;
+  client_name_ar?: string;
   slug: string;
   before_image: string;
   after_image: string;
   cover_image: string;
   image_alt: string;
-  duration_weeks: number;
+  duration_weeks: number | null;
   result_summary: string;
+  result_summary_ar?: string;
   program_name: string;
+  program_name_ar?: string;
   story: string;
+  story_ar?: string;
   is_featured: boolean;
 };
 
 export type Exercise = {
   id: number;
   name: string;
+  name_ar?: string;
   slug: string;
   description: string;
+  description_ar?: string;
   video_url: string;
   thumbnail: string;
   image_alt: string;
@@ -93,13 +117,17 @@ export type Exercise = {
   difficulty: string;
   difficulty_label: string;
   instructions: string;
+  instructions_ar?: string;
   tips: string;
+  tips_ar?: string;
 };
 
 export type PortalVideo = {
   id: number;
   title: string;
+  title_ar?: string;
   description: string;
+  description_ar?: string;
   video_url: string;
   thumbnail: string;
   order: number;
@@ -118,18 +146,24 @@ export type WorkoutExercise = {
   rest_seconds: number;
   tempo: string;
   notes: string;
+  notes_ar?: string;
   exercise: Exercise;
 };
 
 export type Workout = {
   id: number;
   title: string;
+  title_ar?: string;
   slug: string;
   description: string;
+  description_ar?: string;
   duration_minutes: number;
   focus: string;
+  focus_ar?: string;
   coach_notes: string;
+  coach_notes_ar?: string;
   warmup: string;
+  warmup_ar?: string;
   exercises: WorkoutExercise[];
 };
 
@@ -142,21 +176,47 @@ export type ScheduleItem = {
   workout: {
     id: number;
     title: string;
+    title_ar?: string;
     slug: string;
     duration_minutes: number;
     exercise_count: number;
     focus: string;
+    focus_ar?: string;
   } | null;
 };
 
+export type DashboardPackage = {
+  id: number;
+  name: string;
+  name_ar?: string;
+  slug: string;
+  image?: string;
+  duration_weeks?: number | null;
+  gym?: Gym | null;
+};
+
+export type AssignedPlan = {
+  id: number;
+  notes?: string;
+  is_active?: boolean;
+  workout?: Workout | null;
+};
+
 export type DashboardData = {
-  user: { first_name: string; last_name: string; email: string; phone: string };
+  user: { first_name: string; last_name: string; email: string; phone: string; goal?: string };
+  package?: DashboardPackage | null;
+  gym?: Gym | null;
+  goal?: string;
+  membership?: { status: string; start_date: string; end_date: string; duration_weeks: number } | null;
+  assigned_plan?: AssignedPlan | null;
+  plan_pending?: boolean;
   program: {
     title: string;
+    title_ar?: string;
     slug: string;
     start_date: string;
     end_date: string;
-    duration_weeks: number;
+    duration_weeks: number | null;
     current_week: number;
     goal: string;
     progress_percent: number;
@@ -174,11 +234,17 @@ export type DashboardData = {
     consistency: number;
     latest_date: string | null;
   };
-  upcoming_checkin: string;
+  upcoming_checkin: string | null;
 };
 
 export type MyProgram = {
   program: DashboardData["program"];
+  package?: DashboardPackage | null;
+  gym?: Gym | null;
+  goal?: string;
+  plan?: AssignedPlan | null;
+  plan_pending?: boolean;
+  workout?: Workout | null;
   coach_note: string;
   schedule: ScheduleItem[];
   description?: string;
@@ -237,6 +303,7 @@ export type MessageThread = {
 export type Purchase = {
   order_number: string;
   title: string;
+  title_ar?: string;
   status: string;
   amount: string;
   currency: string;
@@ -253,6 +320,7 @@ export type Account = {
   goal: string;
   fitness_level: string;
   current_program?: string | null;
+  current_program_ar?: string | null;
   purchases?: Purchase[];
 };
 

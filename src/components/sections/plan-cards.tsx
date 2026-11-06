@@ -1,157 +1,113 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
 
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/primitives";
 import { packageFeatureLabels } from "@/lib/constants/site";
 import { useLang } from "@/lib/i18n";
+import { pickLocale, formatDuration } from "@/lib/locale";
 import { useSiteHome } from "@/lib/site-home-context";
-import { cn, ease, formatPrice } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import type { Package } from "@/types";
 
-function pickTiers(packages: Package[]) {
-  const bySlug = Object.fromEntries(packages.map((item) => [item.slug, item]));
-  const left = bySlug.foundation ?? packages[0];
-  const mid = packages.find((item) => item.is_highlighted) ?? bySlug.transform ?? packages[1];
-  const right = bySlug.elite ?? packages[packages.length - 1];
-  return [left, mid, right].filter((item, index, list): item is Package => Boolean(item) && list.findIndex((entry) => entry?.slug === item.slug) === index);
-}
-
-function monthlyOf(item: Package) {
-  const months = Math.max(1, item.duration_weeks / 4);
-  return Math.round(Number(item.price) / months);
-}
-
-function yearlyOf(item: Package) {
-  return Math.round(monthlyOf(item) * 10);
-}
-
-export function PlanCards({ packages }: { packages: Package[] }) {
+export function PlanCards({
+  packages,
+  heading,
+  linkHref,
+  linkLabel,
+}: {
+  packages: Package[];
+  heading?: string;
+  linkHref?: string;
+  linkLabel?: string;
+}) {
   const { t, lang, arabic } = useLang();
   const site = useSiteHome();
-  const [cycle, setCycle] = useState<"monthly" | "yearly">("monthly");
-  const tiers = useMemo(() => pickTiers(packages), [packages]);
-  const blurbs = t.blurbs as Record<string, string>;
-  const bulletsBySlug = t.bullets as Record<string, readonly string[]>;
-  const bulletsFor = (item: Package) =>
-    bulletsBySlug[item.slug] ??
-    packageFeatureLabels.filter((row) => item.features[row.key]).map((row) => t.features[row.key]);
+  const items = packages;
+  const title = heading ?? (site.sections.programs.heading[lang] || t.programsHeading);
 
-  if (!tiers.length) return null;
+  if (!items.length) return null;
 
   return (
-    <div className="mx-auto max-w-[980px] text-center">
-      <Reveal>
-        <h2 className={arabic ? "font-arabic text-[clamp(26px,3.4vw,40px)] font-medium leading-[1.3] text-title" : "font-display text-[clamp(28px,3.6vw,42px)] font-medium leading-[1.2] tracking-[-0.03em] text-title"}>
-          {site.sections.pricing.heading[lang] || t.plansTitle}
-        </h2>
-      </Reveal>
-
-      <Reveal delay={0.08}>
-      <div className="mt-6 inline-flex items-center rounded-full bg-background p-1 ring-1 ring-line">
-        <button
-          type="button"
-          onClick={() => setCycle("monthly")}
-          className={cn(
-            "rounded-full px-[14px] py-[6px] text-[13px] font-medium transition-colors",
-            arabic && "font-arabic",
-            cycle === "monthly" ? "bg-primary text-on-primary shadow-sm" : "text-subtitle",
-          )}
-          aria-pressed={cycle === "monthly"}
-        >
-          {t.payMonthly}
-        </button>
-        <button
-          type="button"
-          onClick={() => setCycle("yearly")}
-          className={cn(
-            "rounded-full px-[14px] py-[6px] text-[13px] font-medium transition-colors",
-            arabic && "font-arabic",
-            cycle === "yearly" ? "bg-primary text-on-primary shadow-sm" : "text-subtitle",
-          )}
-          aria-pressed={cycle === "yearly"}
-        >
-          {t.payYearly}
-          <span className="ml-1.5 inline-block h-[6px] w-[6px] -translate-y-[5px] rounded-full bg-primary" aria-hidden />
-        </button>
-      </div>
-      </Reveal>
-
-      <RevealGroup className="mt-10 grid items-stretch gap-4 lg:grid-cols-3">
-        {tiers.map((item, index) => {
-          const featured = Boolean(item.is_highlighted) || index === 1;
-          const amount = cycle === "monthly" ? monthlyOf(item) : yearlyOf(item);
-          const unit = cycle === "monthly" ? t.month : t.year;
-          const cta = `${index === tiers.length - 1 ? t.get : t.start} ${item.name}`;
-
-          return (
-            <RevealItem key={item.slug}>
-            <article
-              className={cn(
-                "flex h-full flex-col rounded-[28px] bg-card p-5 text-left transition-transform duration-500 hover:-translate-y-1.5 sm:p-6",
-                featured
-                  ? "z-10 pb-6 pt-7 shadow-[0_24px_60px_-28px_rgba(0,0,0,0.35)] lg:px-7 lg:pb-7 lg:pt-8"
-                  : "shadow-[0_12px_40px_-30px_rgba(0,0,0,0.2)]",
-              )}
+    <div className="w-full text-center">
+      {heading !== "" ? (
+        <Reveal>
+          <div className="flex flex-col items-start justify-between gap-4 text-start sm:flex-row sm:items-end">
+            <h2
+              className={
+                arabic
+                  ? "font-arabic text-[clamp(26px,3.4vw,40px)] font-medium leading-[1.3] text-title"
+                  : "font-display text-[clamp(28px,3.6vw,42px)] font-medium leading-[1.2] tracking-[-0.03em] text-title"
+              }
             >
-              <h3 className="text-[17px] font-medium tracking-[-0.01em] text-title">{item.name}</h3>
-              <p className={`mt-3 min-h-[48px] text-[13.5px] leading-[1.45] text-subtitle ${arabic ? "font-arabic" : ""}`}>
-                {blurbs[item.slug] ?? item.tagline}
-              </p>
+              {title}
+            </h2>
+            {linkHref && linkLabel ? (
+              <Link href={linkHref} className={`shrink-0 text-sm text-subtitle hover:text-title ${arabic ? "font-arabic" : ""}`}>
+                {linkLabel}
+              </Link>
+            ) : null}
+          </div>
+        </Reveal>
+      ) : null}
 
-              <div className="mt-5 rounded-[22px] bg-background px-4 pb-4 pt-3.5">
-                <div className="flex items-end gap-1.5">
-                  <motion.p
-                    key={`${item.slug}-${amount}`}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease }}
-                    className="text-[34px] font-medium leading-none tracking-[-0.04em] text-title"
+      <RevealGroup className={`${heading === "" ? "" : "mt-10 "}grid w-full grid-cols-1 gap-5 md:grid-cols-3`}>
+        {items.map((item) => {
+          const name = pickLocale(item.name, item.name_ar, lang);
+          const tagline = pickLocale(item.tagline, item.tagline_ar, lang);
+          const description = pickLocale(item.description, item.description_ar, lang);
+          const gym = item.gym ? pickLocale(item.gym.name, item.gym.name_ar, lang) : "";
+          const duration = formatDuration(item.duration_weeks, t.weeks);
+          const bullets = packageFeatureLabels.filter((row) => item.features[row.key]).map((row) => t.features[row.key]);
+          const blurb = tagline || description;
+          return (
+            <RevealItem key={item.slug} className="min-w-0">
+              <article className="flex h-full w-full flex-col rounded-[28px] bg-card p-5 text-left sm:p-6">
+                {item.image ? (
+                  <div className="mb-4 overflow-hidden rounded-[18px] bg-background">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={item.image} alt={item.image_alt || name} className="h-auto w-full object-contain" />
+                  </div>
+                ) : null}
+                {gym && gym !== name ? <p className="text-[12px] text-primary">{gym}</p> : null}
+                <h3 className="text-[17px] font-medium tracking-[-0.01em] text-title">{name}</h3>
+                {blurb ? (
+                  <p className={`mt-3 text-[13.5px] leading-[1.45] text-subtitle ${arabic ? "font-arabic" : ""}`}>{blurb}</p>
+                ) : null}
+                <div className="mt-5 rounded-[22px] bg-background px-4 pb-4 pt-3.5">
+                  {Number(item.price) > 0 ? (
+                    <p className="text-[34px] font-medium leading-none tracking-[-0.04em] text-title">
+                      {formatPrice(item.price, item.currency, lang)}
+                    </p>
+                  ) : null}
+                  {duration ? <p className="mt-2 text-[12px] text-subtitle">{duration}</p> : null}
+                  <Link
+                    href={`/checkout/${item.slug}`}
+                    className={cn(
+                      "mt-3 flex h-11 w-full items-center justify-center rounded-full text-[13px] font-medium transition-colors",
+                      arabic && "font-arabic",
+                      "bg-primary text-on-primary hover:bg-[#6bb3dc]",
+                    )}
                   >
-                    {formatPrice(amount, item.currency)}
-                  </motion.p>
-                  <p className="mb-[2px] text-left text-[10.5px] leading-[1.2] text-subtitle">
-                    USD /
-                    <br />
-                    {unit}
-                  </p>
+                    {t.pricingPage.start}
+                  </Link>
                 </div>
-                <Link
-                  href={`/checkout/${item.slug}`}
-                  className={cn(
-                    "mt-3 flex h-11 w-full items-center justify-center rounded-full text-[13px] font-medium transition-colors",
-                    arabic && "font-arabic",
-                    featured
-                      ? "bg-primary text-on-primary hover:bg-[#6bb3dc]"
-                      : "bg-background text-title hover:bg-line",
-                  )}
-                >
-                  {cta}
-                </Link>
-              </div>
-
-              <ul className="mt-5 space-y-2.5">
-                {bulletsFor(item).map((point) => (
-                  <li key={point} className="flex items-start gap-2.5 text-[13px] leading-5 text-subtitle">
-                    <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2.2} />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
+                {bullets.length ? (
+                  <ul className="mt-5 space-y-2.5">
+                    {bullets.map((point) => (
+                      <li key={point} className="flex items-start gap-2.5 text-[13px] leading-5 text-subtitle">
+                        <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={2.2} />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </article>
             </RevealItem>
           );
         })}
       </RevealGroup>
-
-      <p className="mt-10">
-        <Link href="/pricing" className={`text-[13px] text-subtitle transition-colors hover:text-primary ${arabic ? "font-arabic" : ""}`}>
-          {t.compare}
-        </Link>
-      </p>
     </div>
   );
 }

@@ -1,15 +1,5 @@
-import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import { PricingContent } from "@/components/pages/pricing-content";
-import { getPackages } from "@/lib/api";
-
-export const metadata: Metadata = {
-  title: "Pricing",
-  description: "Compare VBADRAN coaching packages: Foundation, Progress, Transform, and Elite.",
-  alternates: { canonical: "/pricing" },
-};
-
-export default async function PricingPage() {
-  const packages = await getPackages();
-  return <PricingContent packages={packages} />;
+export default function PricingPage() {
+  redirect("/programs");
 }

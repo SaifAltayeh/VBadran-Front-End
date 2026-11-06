@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 
+import { BrandMark } from "@/components/layout/brand-mark";
 import { Media } from "@/components/ui/primitives";
 import { LanguageToggle, useLang } from "@/lib/i18n";
+import { useSiteHome } from "@/lib/site-home-context";
 
 export function AuthChrome({ children }: { children: React.ReactNode }) {
-  const { t, arabic } = useLang();
+  const { t, lang, arabic } = useLang();
+  const name = useSiteHome().site.brandName?.[lang] || "Badran";
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2" dir={arabic ? "rtl" : "ltr"}>
@@ -14,7 +17,7 @@ export function AuthChrome({ children }: { children: React.ReactNode }) {
         <Media src="/images/hero/coach-portrait.jpg" alt="" sizes="50vw" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
         <div className="absolute bottom-10 left-10 right-10 text-white">
-          <p className="text-[11px] uppercase tracking-[0.2em]">VBADRAN</p>
+          <p className="text-[11px] uppercase tracking-[0.2em]">{name}</p>
           <p className={`mt-3 max-w-sm ${arabic ? "font-arabic text-3xl leading-snug" : "font-display text-4xl leading-none tracking-normal"}`}>
             {t.auth.line}
           </p>
@@ -22,8 +25,8 @@ export function AuthChrome({ children }: { children: React.ReactNode }) {
       </div>
       <div className="flex flex-col px-6 py-8 md:px-14">
         <div className="flex items-center justify-between">
-          <Link href="/" className="font-display text-lg font-bold tracking-tight">
-            VBADRAN
+          <Link href="/">
+            <BrandMark />
           </Link>
           <LanguageToggle />
         </div>

@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { Media } from "@/components/ui/primitives";
 import { useLang } from "@/lib/i18n";
+import { pickLocale } from "@/lib/locale";
 import { afterShot, beforeShot } from "@/lib/transformation-shots";
 import { cn } from "@/lib/utils";
 import type { Transformation } from "@/types";
@@ -112,14 +113,16 @@ export function FlipShotCard({
   const reduce = Boolean(useReducedMotion());
   const before = beforeShot[item.slug] ?? item.cover_image;
   const after = afterShot[item.slug] ?? item.cover_image;
-  const meta = `${item.duration_weeks} ${t.weeks} · ${item.program_name}`;
+  const name = pickLocale(item.client_name, item.client_name_ar, arabic ? "ar" : "en");
+  const program = pickLocale(item.program_name, item.program_name_ar, arabic ? "ar" : "en");
+  const meta = item.duration_weeks ? `${item.duration_weeks} ${t.weeks} · ${program}` : program;
 
   return (
     <button
       type="button"
       onClick={() => setFlipped((open) => !open)}
       aria-pressed={flipped}
-      aria-label={`${item.client_name}. ${flipped ? t.workAfter : t.workBefore}. ${t.workFlip}`}
+      aria-label={`${name}. ${flipped ? t.workAfter : t.workBefore}. ${t.workFlip}`}
       className="relative block aspect-[4/5] w-full cursor-pointer rounded-[28px] bg-card p-2 text-start shadow-[0_16px_40px_-28px_rgba(15,30,46,0.55)] [perspective:1400px]"
     >
       <div
@@ -132,9 +135,9 @@ export function FlipShotCard({
       >
         <Face
           src={before}
-          alt={`${item.client_name} — ${t.workBefore}`}
+          alt={`${name} — ${t.workBefore}`}
           label={t.workBefore}
-          name={item.client_name}
+          name={name}
           meta={meta}
           hint={t.workFlip}
           arabic={arabic}
@@ -145,9 +148,9 @@ export function FlipShotCard({
         />
         <Face
           src={after}
-          alt={`${item.client_name} — ${t.workAfter}`}
+          alt={`${name} — ${t.workAfter}`}
           label={t.workAfter}
-          name={item.client_name}
+          name={name}
           meta={meta}
           hint={t.workFlipBack}
           arabic={arabic}

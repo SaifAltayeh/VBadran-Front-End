@@ -1,8 +1,9 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 
 import { copy, faqsByLang, processByLang, reasonsByLang, valuesByLang, type Lang } from "@/lib/i18n/copy";
+import { useSiteHome } from "@/lib/site-home-context";
 import { cn } from "@/lib/utils";
 
 type LanguageContextValue = {
@@ -18,30 +19,39 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-function readLang(): Lang {
-  if (typeof window === "undefined") return "ar";
-  const saved = window.localStorage.getItem("vb-lang");
-  return saved === "en" ? "en" : "ar";
+function subscribeLang(onStoreChange: () => void) {
+  window.addEventListener("storage", onStoreChange);
+  return () => window.removeEventListener("storage", onStoreChange);
+}
+
+function getLangSnapshot(): Lang {
+  return window.localStorage.getItem("vb-lang") === "en" ? "en" : "ar";
+}
+
+function getServerLang(): Lang {
+  return "ar";
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(readLang);
+  const stored = useSyncExternalStore(subscribeLang, getLangSnapshot, getServerLang);
+  const [override, setOverride] = useState<Lang | null>(null);
+  const lang = override ?? stored;
+
+  function setLang(next: Lang) {
+    window.localStorage.setItem("vb-lang", next);
+    setOverride(next);
+  }
 
   useEffect(() => {
-    window.localStorage.setItem("vb-lang", lang);
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
     document.body.classList.toggle("font-arabic", lang === "ar");
   }, [lang]);
 
-  useEffect(() => {
-    setLangState(readLang());
-  }, []);
-
   const value = useMemo<LanguageContextValue>(
     () => ({
       lang,
-      setLang: setLangState,
+      setLang,
       arabic: lang === "ar",
       t: copy[lang],
       process: processByLang[lang],
@@ -58,13 +68,26 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 export function useLang() {
   const context = useContext(LanguageContext);
   if (!context) throw new Error("useLang must be used inside LanguageProvider");
-  return context;
+  const arabicOnly = Boolean(useSiteHome().site?.arabicOnly);
+  if (!arabicOnly || context.lang === "ar") return context;
+  return {
+    ...context,
+    lang: "ar" as const,
+    arabic: true,
+    t: copy.ar,
+    process: processByLang.ar,
+    reasons: reasonsByLang.ar,
+    faqs: faqsByLang.ar,
+    values: valuesByLang.ar,
+  };
 }
 
 export function LanguageToggle({ className }: { className?: string }) {
   const { lang, setLang } = useLang();
+  const arabicOnly = Boolean(useSiteHome().site?.arabicOnly);
+  if (arabicOnly) return null;
   return (
-    <div className={cn("inline-flex shrink-0 rounded-full border border-line p-0.5", className)} role="group" aria-label="Language">
+    <div className={cn("inline-flex shrink-0 rounded-full border border-line p-0.5", className)} role="group" aria-label={lang === "ar" ? "اللغة" : "Language"}>
       <button
         type="button"
         onClick={() => setLang("en")}
